@@ -12,8 +12,6 @@ public class BasicCharacterStateMachine : MonoBehaviour
     public float moveSpeed;
     [HideInInspector]
     public Vector3 moveDirection;
-    [Tooltip("Fuerza del salto")]
-    public float jumpForce;
     [Tooltip("Factor de gravedad. Se multiplica con la fuerza de gravedad de Unity")]
     public float gravityScale = 5f;
     [HideInInspector]
@@ -21,12 +19,24 @@ public class BasicCharacterStateMachine : MonoBehaviour
     public bool isGrounded;
     [Tooltip("Distancia que mide el rayo de deteccion suelo")]
     public float groundCheckDistance = 1;
-    [Tooltip("Offset de la deteccion suelo")]
+    [Tooltip("Offset de la deteccion suelo (Respecto pivote)")]
     public float groundCheckOffset;
-    [Tooltip("Capa suelo. La usa el raycast para diferenciar lo que es suelo de lo que no lo es")]
+    [Tooltip("Capa suelo. Raycast para diferenciar lo que es suelo de lo que no lo es")]
     public LayerMask groundLayers;
-
+    [Tooltip("Capa con las cosas con las que se puede interactuar, como el peluche")]
+    public LayerMask interactLayers;
+    [Tooltip("Capa con los lugares de escondite")]
+    public LayerMask hidePlaceLayers;
+    [Tooltip("Capa con las cosas que se pueden recoger")]
+    public LayerMask pickUpLayers;
+    [HideInInspector]
     public bool pickingUp = false;
+    [HideInInspector]
+    public bool sneaking = false;
+    [HideInInspector]
+    public bool hiding = false;
+     [HideInInspector]
+    public bool interacting = false;
 
     //El estado actual en el que está ese enemigo
     public States currentState;
@@ -70,6 +80,39 @@ public class BasicCharacterStateMachine : MonoBehaviour
         //se multiplica por la velocidad de movimiento
         moveDirection = moveDirection * moveSpeed;
         moveDirection.y = yStore;
+    }
+
+    public void Sneak()
+    {
+        //se puede mover mientras sneakea
+        BasicCharacterStateMachine.instance.MovementInput();                   
+        BasicCharacterStateMachine.instance.GravityApply();
+        transform.localScale = new Vector3 (transform.localScale.x, 0.5f, transform.localScale.z);
+    }
+
+    public void ScaleBackToNormal()
+    {
+       
+        transform.localScale = new Vector3 (transform.localScale.x, 1f, transform.localScale.z);
+    }
+
+    public void Interact()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position + groundCheckOffset * Vector3.up, Vector3.down, out hit, groundCheckDistance, interactLayers))
+        {
+            Debug.DrawRay(transform.position + groundCheckOffset * Vector3.up, Vector3.down * groundCheckDistance, Color.green);
+            //esta tocando suelo
+            isGrounded = true;
+            //reseteamos la y cuando esta parado en el suelo para que no haga cosas raras
+            moveDirection = new Vector3(moveDirection.x, 0, moveDirection.z);
+        }
+        else
+        {
+            Debug.DrawRay(transform.position + groundCheckOffset * Vector3.up, Vector3.down * groundCheckDistance, Color.red);
+            //no esta tocando suelo
+            isGrounded = false;
+        }
     }
 
 

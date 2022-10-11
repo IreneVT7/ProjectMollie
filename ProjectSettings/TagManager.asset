@@ -11,11 +11,11 @@ TagManager:
   - Suelo
   - Water
   - UI
-  - 
-  - 
+  - Interact
+  - PickUp
   - PostProcessing
   - Not in Reflection
-  - 
+  - Hideout
   - 
   - 
   - 
