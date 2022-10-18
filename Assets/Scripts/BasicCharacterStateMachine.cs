@@ -10,6 +10,8 @@ public class BasicCharacterStateMachine : MonoBehaviour
     // public Animator anim;
     [Tooltip("Velocidad a la que se mueve el personaje")]
     public float moveSpeed;
+    [Tooltip("Velocidad a la que se mueve el personaje cuando esta agachado")]
+    public float sneakMoveSpeed;
     [HideInInspector]
     public Vector3 moveDirection;
     [Tooltip("Factor de gravedad. Se multiplica con la fuerza de gravedad de Unity")]
@@ -29,6 +31,10 @@ public class BasicCharacterStateMachine : MonoBehaviour
     public LayerMask hidePlaceLayers;
     [Tooltip("Capa con las cosas que se pueden recoger")]
     public LayerMask pickUpLayers;
+    [Tooltip("La linterna")]
+    public GameObject flashlight;
+    [HideInInspector]
+    public bool flashlightON = false;
     [HideInInspector]
     public bool pickingUp = false;
     [HideInInspector]
@@ -82,17 +88,26 @@ public class BasicCharacterStateMachine : MonoBehaviour
         moveDirection.y = yStore;
     }
 
-    public void Sneak()
+    public void SneakMovementInput()
     {
-        //se puede mover mientras sneakea
-        BasicCharacterStateMachine.instance.MovementInput();                   
-        BasicCharacterStateMachine.instance.GravityApply();
+        //al principio guarda la y del jugador para que no se sobreescriba y se normalice junto con la x y la z. Luego la vuelve a aplicar al moveDirection y asi se mantiene
+        float yStore = moveDirection.y;
+        //A la direccion de movimiento se le pasa un vector resultante de la suma de su movimiento en ambos ejes.        
+        var input = ((transform.forward * Input.GetAxisRaw("Vertical")) + (transform.right * Input.GetAxisRaw("Horizontal"))).normalized;
+        moveDirection = input;
+
+        //se multiplica por la velocidad de movimiento
+        moveDirection = moveDirection * sneakMoveSpeed;
+        moveDirection.y = yStore;
+    }
+
+    public void Sneak()
+    {        
         transform.localScale = new Vector3 (transform.localScale.x, 0.5f, transform.localScale.z);
     }
 
     public void ScaleBackToNormal()
-    {
-       
+    {       
         transform.localScale = new Vector3 (transform.localScale.x, 1f, transform.localScale.z);
     }
 
@@ -112,6 +127,19 @@ public class BasicCharacterStateMachine : MonoBehaviour
             Debug.DrawRay(transform.position + groundCheckOffset * Vector3.up, Vector3.down * groundCheckDistance, Color.red);
             //no esta tocando suelo
             isGrounded = false;
+        }
+    }
+
+    public void FlashlightOnOff()
+    {
+        flashlightON = !flashlightON;
+        if (flashlightON)
+        {
+            flashlight.SetActive(true);
+        }
+        else
+        {
+            flashlight.SetActive(false);
         }
     }
 
@@ -138,6 +166,7 @@ public class BasicCharacterStateMachine : MonoBehaviour
         // anim = this.GetComponent<Animator>();
         //Elegimos el estado en el que empieza este personaje
         TransitionToState(new Idle());
+        flashlightON = false;
     }
 
     // Update is called once per frame
@@ -145,11 +174,16 @@ public class BasicCharacterStateMachine : MonoBehaviour
     {
         //Si el evento en el que estoy es el de update, hago el método correspondiente
         currentState.Update();
-        //si se pulsa el click izquierdo (fire1) entonces notifica al observer de que una coin esta siendo recogida
-        if (Input.GetButtonDown("Fire1"))
+        //Al pulsar la F, enciende o apaga la linterna dependiendo de su estado anterior
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            
+            FlashlightOnOff();
         }
+        // //si se pulsa el click izquierdo (fire1) entonces notifica al observer de que una coin esta siendo recogida
+        // if (Input.GetButtonDown("Fire1"))
+        // {
+            
+        // }
     }
 
     public void TransitionToState(States state)

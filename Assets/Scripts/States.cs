@@ -236,7 +236,10 @@ public class Sneak : States
     //UPDATE (IMPORTANTE: recordar dar salida al siguiente estado que pueda hacer)
     public override void Update()
     {        
-
+        //se puede mover mientras sneakea
+        BasicCharacterStateMachine.instance.SneakMovementInput();                   
+        BasicCharacterStateMachine.instance.GravityApply();
+        
         if (Input.GetButton("Sneak"))
         {
             if (BasicCharacterStateMachine.instance.isGrounded == false)
