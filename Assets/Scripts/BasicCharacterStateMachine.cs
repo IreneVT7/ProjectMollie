@@ -33,10 +33,18 @@ public class BasicCharacterStateMachine : MonoBehaviour
     public LayerMask pickUpLayers;
     [Tooltip("La linterna")]
     public GameObject flashlight;
+    [Tooltip("Objeto vacio al que se emparentan todas las cosas que se recogen")]
+    public GameObject pickUpParent;
+    [Tooltip("MainCamera del jugador")]
+    public Camera plCamera;
+    [Tooltip("MainCamera del jugador")]
+    public YawController yawController;
     [HideInInspector]
     public bool flashlightON = false;
     [HideInInspector]
     public bool pickingUp = false;
+    [HideInInspector]
+    public bool cooldown = false;
     [HideInInspector]
     public bool sneaking = false;
     [HideInInspector]
@@ -111,24 +119,42 @@ public class BasicCharacterStateMachine : MonoBehaviour
         transform.localScale = new Vector3 (transform.localScale.x, 1f, transform.localScale.z);
     }
 
-    public void Interact()
+    
+
+    public void PickUpOrDrop()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position + groundCheckOffset * Vector3.up, Vector3.down, out hit, groundCheckDistance, interactLayers))
+        Vector3 pos = new Vector3(960, 540, 0);
+        Ray ray = plCamera.ScreenPointToRay(pos);
+        if (Physics.Raycast(ray.origin, ray.direction, out hit, 4f, pickUpLayers))
         {
-            Debug.DrawRay(transform.position + groundCheckOffset * Vector3.up, Vector3.down * groundCheckDistance, Color.green);
-            //esta tocando suelo
-            isGrounded = true;
-            //reseteamos la y cuando esta parado en el suelo para que no haga cosas raras
-            moveDirection = new Vector3(moveDirection.x, 0, moveDirection.z);
+            Debug.DrawRay(ray.origin, ray.direction * 4f, Color.green);
+            // Debug.DrawRay(plCamera.transform.position + groundCheckOffset * Vector3.up, Vector3.down * groundCheckDistance, Color.green);
+            if (Input.GetButtonDown("Fire1") && (cooldown == false))
+            {                
+                var obj = hit.collider.gameObject;
+                obj.GetComponent<Rigidbody>().isKinematic = true;
+                obj.transform.parent = pickUpParent.transform;
+                obj.transform.position = pickUpParent.transform.position;
+                pickingUp = true;
+                StartCoroutine(Cooldown(0.5f));
+
+                if (Input.GetButtonDown("Fire1")&& (cooldown == false))
+                {
+                    Debug.Log("unparented");
+                    obj.transform.parent = null;
+                    obj.GetComponent<Rigidbody>().isKinematic = false;
+                    pickingUp = false;
+                }
+            }
         }
         else
         {
-            Debug.DrawRay(transform.position + groundCheckOffset * Vector3.up, Vector3.down * groundCheckDistance, Color.red);
-            //no esta tocando suelo
-            isGrounded = false;
+            Debug.DrawRay(ray.origin, ray.direction * 4f, Color.red);
         }
     }
+
+    
 
     public void FlashlightOnOff()
     {
@@ -141,6 +167,14 @@ public class BasicCharacterStateMachine : MonoBehaviour
         {
             flashlight.SetActive(false);
         }
+    }
+
+    IEnumerator Cooldown(float sec)
+    {
+        cooldown = true;
+        yield return new WaitForSeconds(sec);
+        cooldown = false;
+        // yield return null;
     }
 
 
@@ -166,7 +200,9 @@ public class BasicCharacterStateMachine : MonoBehaviour
         // anim = this.GetComponent<Animator>();
         //Elegimos el estado en el que empieza este personaje
         TransitionToState(new Idle());
-        flashlightON = false;
+        flashlightON = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
@@ -179,6 +215,8 @@ public class BasicCharacterStateMachine : MonoBehaviour
         {
             FlashlightOnOff();
         }
+        PickUpOrDrop();
+
         // //si se pulsa el click izquierdo (fire1) entonces notifica al observer de que una coin esta siendo recogida
         // if (Input.GetButtonDown("Fire1"))
         // {
