@@ -102,7 +102,7 @@ public class BasicCharacterStateMachine : MonoBehaviour
     }
 
     public void Sneak()
-    {        
+    {    
         transform.localScale = new Vector3 (transform.localScale.x, 0.5f, transform.localScale.z);
     }
 

@@ -183,7 +183,9 @@ public class Fall : States
     public override void Update()
     {
         BasicCharacterStateMachine.instance.MovementInput();
+        BasicCharacterStateMachine.instance.Grounded();
         BasicCharacterStateMachine.instance.GravityApply();
+        BasicCharacterStateMachine.instance.rb.velocity = BasicCharacterStateMachine.instance.moveDirection;
 
         BasicCharacterStateMachine.instance.rb.velocity = BasicCharacterStateMachine.instance.moveDirection;
         t += Time.deltaTime;
@@ -237,8 +239,10 @@ public class Sneak : States
     public override void Update()
     {        
         //se puede mover mientras sneakea
-        BasicCharacterStateMachine.instance.SneakMovementInput();                   
+        BasicCharacterStateMachine.instance.SneakMovementInput();
+        BasicCharacterStateMachine.instance.Grounded();
         BasicCharacterStateMachine.instance.GravityApply();
+        BasicCharacterStateMachine.instance.rb.velocity = BasicCharacterStateMachine.instance.moveDirection;
         
         if (Input.GetButton("Sneak"))
         {

@@ -1548,7 +1548,7 @@ PrefabInstance:
       objectReference: {fileID: 681795738}
     - target: {fileID: 6402953791107186448, guid: 76d82d66cddf69e46953e66d5fcbff3c, type: 3}
       propertyPath: sneakMoveSpeed
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6402953791107186449, guid: 76d82d66cddf69e46953e66d5fcbff3c, type: 3}
       propertyPath: m_Name
