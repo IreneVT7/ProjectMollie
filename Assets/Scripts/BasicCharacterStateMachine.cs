@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BasicCharacterStateMachine : MonoBehaviour
-{[Header("Movement")]
+{
+    //-------------------VARIABLES-------------------
+    #region MovementVAR
+    [Header("Movement")]
     [Tooltip("Rigidbody del personaje")]
     public Rigidbody rb;
     // [Tooltip("Animator del personaje")]
@@ -17,12 +20,18 @@ public class BasicCharacterStateMachine : MonoBehaviour
     [Tooltip("Factor de gravedad. Se multiplica con la fuerza de gravedad de Unity")]
     public float gravityScale = 5f;
     [HideInInspector]
-    [Tooltip("¿El personaje esta tocando el suelo?")]
     public bool isGrounded;
+    #endregion 
+    #region RaycastVAR
+    [Header("Raycast")]
     [Tooltip("Distancia que mide el rayo de deteccion suelo")]
     public float groundCheckDistance = 1;
     [Tooltip("Offset de la deteccion suelo (Respecto pivote)")]
     public float groundCheckOffset;
+    [HideInInspector]
+    public RaycastHit camHit;
+    [HideInInspector]
+    public Ray camRay;
     [Tooltip("Capa suelo. Raycast para diferenciar lo que es suelo de lo que no lo es")]
     public LayerMask groundLayers;
     [Tooltip("Capa con las cosas con las que se puede interactuar, como el peluche")]
@@ -31,16 +40,19 @@ public class BasicCharacterStateMachine : MonoBehaviour
     public LayerMask hidePlaceLayers;
     [Tooltip("Capa con las cosas que se pueden recoger")]
     public LayerMask pickUpLayers;
-    [Tooltip("La linterna")]
+    #endregion 
+    #region MiscVAR
+    [Header("Misc")]
+    [Tooltip("Game Object de la linterna")]
     public GameObject flashlight;
-    [Tooltip("Objeto vacio al que se emparentan todas las cosas que se recogen")]
-    public GameObject pickUpParent;
     [Tooltip("MainCamera del jugador")]
-    public Camera plCamera;
+    public Camera FPCamera;
     [Tooltip("MainCamera del jugador")]
     public YawController yawController;
     [HideInInspector]
     public bool flashlightON = false;
+    [HideInInspector]
+    public bool camRayHit = false;
     [HideInInspector]
     public bool pickingUp = false;
     [HideInInspector]
@@ -51,11 +63,13 @@ public class BasicCharacterStateMachine : MonoBehaviour
     public bool hiding = false;
      [HideInInspector]
     public bool interacting = false;
-
-    //El estado actual en el que está ese enemigo
+    #endregion 
+    [Header("States")]
+    [Tooltip("Estado actual del jugador")]
     public States currentState;
 
 
+    //-------------------FUNCTIONS-------------------
     public void Grounded()
     {
         RaycastHit hit;
@@ -83,7 +97,7 @@ public class BasicCharacterStateMachine : MonoBehaviour
         moveDirection.y += Physics.gravity.y * Time.deltaTime * gravityScale;
     }
 
-    public void MovementInput()
+    public void MovementInput(float speed)
     {
         //al principio guarda la y del jugador para que no se sobreescriba y se normalice junto con la x y la z. Luego la vuelve a aplicar al moveDirection y asi se mantiene
         float yStore = moveDirection.y;
@@ -92,23 +106,10 @@ public class BasicCharacterStateMachine : MonoBehaviour
         moveDirection = input;
 
         //se multiplica por la velocidad de movimiento
-        moveDirection = moveDirection * moveSpeed;
+        moveDirection = moveDirection * speed;
         moveDirection.y = yStore;
-    }
-
-    public void SneakMovementInput()
-    {
-        //al principio guarda la y del jugador para que no se sobreescriba y se normalice junto con la x y la z. Luego la vuelve a aplicar al moveDirection y asi se mantiene
-        float yStore = moveDirection.y;
-        //A la direccion de movimiento se le pasa un vector resultante de la suma de su movimiento en ambos ejes.        
-        var input = ((transform.forward * Input.GetAxisRaw("Vertical")) + (transform.right * Input.GetAxisRaw("Horizontal"))).normalized;
-        moveDirection = input;
-
-        //se multiplica por la velocidad de movimiento
-        moveDirection = moveDirection * sneakMoveSpeed;
-        moveDirection.y = yStore;
-    }
-
+    }   
+    
     public void Sneak()
     {    
         transform.localScale = new Vector3 (transform.localScale.x, 0.5f, transform.localScale.z);
@@ -118,43 +119,40 @@ public class BasicCharacterStateMachine : MonoBehaviour
     {       
         transform.localScale = new Vector3 (transform.localScale.x, 1f, transform.localScale.z);
     }
-
     
-
     public void PickUpOrDrop()
-    {
-        RaycastHit hit;
-        Vector3 pos = new Vector3(960, 540, 0);
-        Ray ray = plCamera.ScreenPointToRay(pos);
-        if (Physics.Raycast(ray.origin, ray.direction, out hit, 4f, pickUpLayers))
-        {
-            Debug.DrawRay(ray.origin, ray.direction * 4f, Color.green);
-            // Debug.DrawRay(plCamera.transform.position + groundCheckOffset * Vector3.up, Vector3.down * groundCheckDistance, Color.green);
+    {   
+        //si está mirando al objeto y hace input, que lo coja
+        if (camRayHit)
+        {           
             if (Input.GetButtonDown("Fire1") && (cooldown == false))
-            {                
-                var obj = hit.collider.gameObject;
-                obj.GetComponent<Rigidbody>().isKinematic = true;
-                obj.transform.parent = pickUpParent.transform;
-                obj.transform.position = pickUpParent.transform.position;
+            {              
+                Debug.Log("object Picked");  
+                // var obj = hit.collider.gameObject;
+                // obj.GetComponent<Rigidbody>().isKinematic = true;
+                // obj.transform.parent = pickUpParent.transform;
+                // obj.transform.position = pickUpParent.transform.position;
                 pickingUp = true;
+                //cooldown necesario para que no ocurra todo en el mismo frame
                 StartCoroutine(Cooldown(0.5f));
-
-                if (Input.GetButtonDown("Fire1")&& (cooldown == false))
-                {
-                    Debug.Log("unparented");
-                    obj.transform.parent = null;
-                    obj.GetComponent<Rigidbody>().isKinematic = false;
-                    pickingUp = false;
-                }
+                
             }
         }
+        //si ya tiene un objeto, le da al input y el cooldown se ha acabado, entonces que lo suelte
+        else if (Input.GetButtonDown("Fire1") && (pickingUp == true) && (cooldown == false))
+        {
+            Debug.Log("object Down");                      
+            // Debug.Log("unparented");
+            // obj.transform.parent = null;
+            // obj.GetComponent<Rigidbody>().isKinematic = false;
+            pickingUp = false;
+        }
+        //si no está mirando, que el rayo sea rojo y ya esta
         else
         {
-            Debug.DrawRay(ray.origin, ray.direction * 4f, Color.red);
+            Debug.DrawRay(camRay.origin, camRay.direction * 4f, Color.red);
         }
     }
-
-    
 
     public void FlashlightOnOff()
     {
@@ -171,14 +169,15 @@ public class BasicCharacterStateMachine : MonoBehaviour
 
     IEnumerator Cooldown(float sec)
     {
+        //no se porque estas leyendo esto. es un cooldown simple
         cooldown = true;
         yield return new WaitForSeconds(sec);
         cooldown = false;
-        // yield return null;
     }
 
 
-    //SINGLETON
+
+    //-------------------START AND UPDATE-------------
     public static BasicCharacterStateMachine instance;
     private void Awake()
     {
@@ -210,18 +209,34 @@ public class BasicCharacterStateMachine : MonoBehaviour
     {
         //Si el evento en el que estoy es el de update, hago el método correspondiente
         currentState.Update();
+
+
         //Al pulsar la F, enciende o apaga la linterna dependiendo de su estado anterior
         if (Input.GetKeyDown(KeyCode.F))
         {
             FlashlightOnOff();
         }
-        PickUpOrDrop();
 
-        // //si se pulsa el click izquierdo (fire1) entonces notifica al observer de que una coin esta siendo recogida
-        // if (Input.GetButtonDown("Fire1"))
-        // {
-            
-        // }
+        //Raycast desde el centro de la camara para comprobar a que está mirando y si puede interactuar o no
+        Vector3 pos = new Vector3(960, 540, 0);
+        camRay = FPCamera.ScreenPointToRay(pos);
+        if (Physics.Raycast(camRay.origin, camRay.direction, out camHit, 4f, pickUpLayers))
+        {
+            Debug.DrawRay(camRay.origin, camRay.direction * 4f, Color.green);     
+            camRayHit = true;       
+        }
+        else
+        {
+            Debug.DrawRay(camRay.origin, camRay.direction * 4f, Color.red);
+            camRayHit = false;
+        }
+        //segun lo que pille en el raycast, podrá recoger objetos...
+        PickUpOrDrop();
+        //...usar objetos
+        //...interactuar con cosas
+        //...esconderse
+
+        
     }
 
     public void TransitionToState(States state)

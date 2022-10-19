@@ -60,7 +60,7 @@ public class Idle : States
     public override void Update()
     {
         // Debug.Log("update");
-        BasicCharacterStateMachine.instance.MovementInput();
+        BasicCharacterStateMachine.instance.MovementInput(BasicCharacterStateMachine.instance.moveSpeed);
         BasicCharacterStateMachine.instance.Grounded();
         // Debug.Log(BasicCharacterStateMachine.instance.moveDirection);
         if (BasicCharacterStateMachine.instance.moveDirection != Vector3.zero)
@@ -121,7 +121,7 @@ public class Run : States
     //UPDATE (IMPORTANTE: recordar dar salida al siguiente estado que pueda hacer)
     public override void Update()
     {
-        BasicCharacterStateMachine.instance.MovementInput();
+        BasicCharacterStateMachine.instance.MovementInput(BasicCharacterStateMachine.instance.moveSpeed);
         BasicCharacterStateMachine.instance.Grounded();
         BasicCharacterStateMachine.instance.rb.velocity = BasicCharacterStateMachine.instance.moveDirection;
         if (BasicCharacterStateMachine.instance.moveDirection == Vector3.zero)
@@ -182,7 +182,7 @@ public class Fall : States
     //UPDATE (IMPORTANTE: recordar dar salida al siguiente estado que pueda hacer)
     public override void Update()
     {
-        BasicCharacterStateMachine.instance.MovementInput();
+        BasicCharacterStateMachine.instance.MovementInput(BasicCharacterStateMachine.instance.moveSpeed);
         BasicCharacterStateMachine.instance.Grounded();
         BasicCharacterStateMachine.instance.GravityApply();
         BasicCharacterStateMachine.instance.rb.velocity = BasicCharacterStateMachine.instance.moveDirection;
@@ -239,7 +239,7 @@ public class Sneak : States
     public override void Update()
     {        
         //se puede mover mientras sneakea
-        BasicCharacterStateMachine.instance.SneakMovementInput();
+        BasicCharacterStateMachine.instance.MovementInput(BasicCharacterStateMachine.instance.sneakMoveSpeed);
         BasicCharacterStateMachine.instance.Grounded();
         BasicCharacterStateMachine.instance.GravityApply();
         BasicCharacterStateMachine.instance.rb.velocity = BasicCharacterStateMachine.instance.moveDirection;
