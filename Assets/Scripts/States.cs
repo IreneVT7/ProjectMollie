@@ -59,25 +59,23 @@ public class Idle : States
     //UPDATE (IMPORTANTE: recordar dar salida al siguiente estado que pueda hacer)
     public override void Update()
     {
-        // Debug.Log("update");
+        //Tiene que hacer el movimiento en idle aunque no haya input para asi saber cuando cambia su velocidad.
         BasicCharacterStateMachine.instance.MovementInput(BasicCharacterStateMachine.instance.moveSpeed);
         BasicCharacterStateMachine.instance.Grounded();
-        // Debug.Log(BasicCharacterStateMachine.instance.moveDirection);
+
         if (BasicCharacterStateMachine.instance.moveDirection != Vector3.zero)
-        {
-            // Debug.Log("deberia entrar en run");
+        {            
             //Si se mueve pasamos a correr
             BasicCharacterStateMachine.instance.TransitionToState(new Run());
         }
         else if (BasicCharacterStateMachine.instance.pickingUp == true)
         {
-            //Si esta cerca de algo y pulsamos el boton pasamos a recoger moneda
-            // BasicCharacterStateMachine.instance.TransitionToState(new PickUp());
+            //Si esta cerca de algo y pulsamos el boton pasamos a recogerlo
         }
         else if ((Input.GetButton("Sneak")) && (BasicCharacterStateMachine.instance.isGrounded == true))
         {
-            BasicCharacterStateMachine.instance.TransitionToState(new Sneak());
-            //Si salta pasamos al estado de salto
+            //Si snekea pos que sneakee
+            BasicCharacterStateMachine.instance.TransitionToState(new Sneak());            
         }
         else if (BasicCharacterStateMachine.instance.isGrounded == false)
         {
@@ -121,9 +119,11 @@ public class Run : States
     //UPDATE (IMPORTANTE: recordar dar salida al siguiente estado que pueda hacer)
     public override void Update()
     {
+        //primero se mueve, despues hace las condiciones
         BasicCharacterStateMachine.instance.MovementInput(BasicCharacterStateMachine.instance.moveSpeed);
         BasicCharacterStateMachine.instance.Grounded();
         BasicCharacterStateMachine.instance.rb.velocity = BasicCharacterStateMachine.instance.moveDirection;
+
         if (BasicCharacterStateMachine.instance.moveDirection == Vector3.zero)
         {
             //Si NO se mueve pasamos a idle
@@ -131,8 +131,7 @@ public class Run : States
         }
         else if (BasicCharacterStateMachine.instance.pickingUp == true)
         {
-            //Si esta cerca de una moneda y pulsamos el boton pasamos a recoger moneda
-            // BasicCharacterStateMachine.instance.TransitionToState(new PickUp());
+            //Si esta cerca de algo y pulsamos el boton pasamos a recogerlo
         }
         else if ((Input.GetButton("Sneak")) && (BasicCharacterStateMachine.instance.isGrounded == true))
         {
@@ -196,13 +195,8 @@ public class Fall : States
             {
                 //cuando termina de caer y toca suelo pasa a idle y de idle a donde sea
                 BasicCharacterStateMachine.instance.TransitionToState(new Idle());
-
             }
         }
-        // else
-        // {
-
-        // }
     }
 
     //EXIT 
@@ -255,13 +249,13 @@ public class Sneak : States
             else if (BasicCharacterStateMachine.instance.hiding == true)
             {
                 BasicCharacterStateMachine.instance.ScaleBackToNormal();
-                //Si esta cerca de un escondite, que se pase a esconderse
+                //Si esta cerca de un escondite, que pase a esconderse
                 // BasicCharacterStateMachine.instance.TransitionToState(new PickUp());
             }
             else if (BasicCharacterStateMachine.instance.pickingUp == true)
             {
                 BasicCharacterStateMachine.instance.ScaleBackToNormal();
-                //Si esta cerca de algo y pulsamos el boton pasamos a recoger moneda
+                //Si esta cerca de algo y pulsamos el boton pasamos a recogerlo
                 // BasicCharacterStateMachine.instance.TransitionToState(new PickUp());
             }
             else if (BasicCharacterStateMachine.instance.interacting == true)
