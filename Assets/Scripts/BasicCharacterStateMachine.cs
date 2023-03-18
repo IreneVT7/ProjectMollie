@@ -61,7 +61,7 @@ public class BasicCharacterStateMachine : MonoBehaviour
     public bool sneaking = false;
     [HideInInspector]
     public bool hiding = false;
-     [HideInInspector]
+    [HideInInspector]
     public bool interacting = false;
     #endregion 
     [Header("States")]
@@ -108,26 +108,26 @@ public class BasicCharacterStateMachine : MonoBehaviour
         //se multiplica por la velocidad de movimiento
         moveDirection = moveDirection * speed;
         moveDirection.y = yStore;
-    }   
-    
+    }
+
     public void Sneak()
-    {    
-        transform.localScale = new Vector3 (transform.localScale.x, 0.5f, transform.localScale.z);
+    {
+        transform.localScale = new Vector3(transform.localScale.x, 0.5f, transform.localScale.z);
     }
 
     public void ScaleBackToNormal()
-    {       
-        transform.localScale = new Vector3 (transform.localScale.x, 1f, transform.localScale.z);
+    {
+        transform.localScale = new Vector3(transform.localScale.x, 1f, transform.localScale.z);
     }
-    
+
     public void PickUpOrDrop()
-    {   
+    {
         //si está mirando al objeto y hace input, que lo coja
         if (camRayHit)
-        {           
+        {
             if (Input.GetButtonDown("Fire1") && (cooldown == false))
-            {              
-                Debug.Log("object Picked");  
+            {
+                Debug.Log("object Picked");
                 // var obj = hit.collider.gameObject;
                 // obj.GetComponent<Rigidbody>().isKinematic = true;
                 // obj.transform.parent = pickUpParent.transform;
@@ -135,13 +135,47 @@ public class BasicCharacterStateMachine : MonoBehaviour
                 pickingUp = true;
                 //cooldown necesario para que no ocurra todo en el mismo frame
                 StartCoroutine(Cooldown(0.5f));
-                
+
             }
         }
         //si ya tiene un objeto, le da al input y el cooldown se ha acabado, entonces que lo suelte
         else if (Input.GetButtonDown("Fire1") && (pickingUp == true) && (cooldown == false))
         {
-            Debug.Log("object Down");                      
+            Debug.Log("object Down");
+            // Debug.Log("unparented");
+            // obj.transform.parent = null;
+            // obj.GetComponent<Rigidbody>().isKinematic = false;
+            pickingUp = false;
+        }
+        //si no está mirando, que el rayo sea rojo y ya esta
+        else
+        {
+            Debug.DrawRay(camRay.origin, camRay.direction * 4f, Color.red);
+        }
+    }
+
+    public void Hide()
+    {
+        //si está mirando al objeto y hace input, que se esconda
+        if (camRayHit)
+        {
+            if (Input.GetButtonDown("Fire1") && (cooldown == false))
+            {
+                Debug.Log("object Picked");
+                // var obj = hit.collider.gameObject;
+                // obj.GetComponent<Rigidbody>().isKinematic = true;
+                // obj.transform.parent = pickUpParent.transform;
+                // obj.transform.position = pickUpParent.transform.position;
+                pickingUp = true;
+                //cooldown necesario para que no ocurra todo en el mismo frame
+                StartCoroutine(Cooldown(0.5f));
+
+            }
+        }
+        //si ya tiene un objeto, le da al input y el cooldown se ha acabado, entonces que lo suelte
+        else if (Input.GetButtonDown("Fire1") && (pickingUp == true) && (cooldown == false))
+        {
+            Debug.Log("object Down");
             // Debug.Log("unparented");
             // obj.transform.parent = null;
             // obj.GetComponent<Rigidbody>().isKinematic = false;
@@ -222,8 +256,8 @@ public class BasicCharacterStateMachine : MonoBehaviour
         camRay = FPCamera.ScreenPointToRay(pos);
         if (Physics.Raycast(camRay.origin, camRay.direction, out camHit, 4f, pickUpLayers))
         {
-            Debug.DrawRay(camRay.origin, camRay.direction * 4f, Color.green);     
-            camRayHit = true;       
+            Debug.DrawRay(camRay.origin, camRay.direction * 4f, Color.green);
+            camRayHit = true;
         }
         else
         {
@@ -236,7 +270,7 @@ public class BasicCharacterStateMachine : MonoBehaviour
         //...interactuar con cosas
         //...esconderse
 
-        
+
     }
 
     public void TransitionToState(States state)

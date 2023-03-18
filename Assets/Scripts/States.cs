@@ -64,7 +64,7 @@ public class Idle : States
         BasicCharacterStateMachine.instance.Grounded();
 
         if (BasicCharacterStateMachine.instance.moveDirection != Vector3.zero)
-        {            
+        {
             //Si se mueve pasamos a correr
             BasicCharacterStateMachine.instance.TransitionToState(new Run());
         }
@@ -75,7 +75,7 @@ public class Idle : States
         else if ((Input.GetButton("Sneak")) && (BasicCharacterStateMachine.instance.isGrounded == true))
         {
             //Si snekea pos que sneakee
-            BasicCharacterStateMachine.instance.TransitionToState(new Sneak());            
+            BasicCharacterStateMachine.instance.TransitionToState(new Sneak());
         }
         else if (BasicCharacterStateMachine.instance.isGrounded == false)
         {
@@ -156,7 +156,6 @@ public class Run : States
     }
 }
 
-
 [SerializeField]
 public class Fall : States
 {
@@ -231,13 +230,13 @@ public class Sneak : States
 
     //UPDATE (IMPORTANTE: recordar dar salida al siguiente estado que pueda hacer)
     public override void Update()
-    {        
+    {
         //se puede mover mientras sneakea
         BasicCharacterStateMachine.instance.MovementInput(BasicCharacterStateMachine.instance.sneakMoveSpeed);
         BasicCharacterStateMachine.instance.Grounded();
         BasicCharacterStateMachine.instance.GravityApply();
         BasicCharacterStateMachine.instance.rb.velocity = BasicCharacterStateMachine.instance.moveDirection;
-        
+
         if (Input.GetButton("Sneak"))
         {
             if (BasicCharacterStateMachine.instance.isGrounded == false)
@@ -263,13 +262,13 @@ public class Sneak : States
                 BasicCharacterStateMachine.instance.ScaleBackToNormal();
                 //Si esta cerca de algo interactuable, pasamos a interactuar
                 // BasicCharacterStateMachine.instance.TransitionToState(new PickUp());
-            }             
+            }
         }
         else
         {
             BasicCharacterStateMachine.instance.ScaleBackToNormal();
             BasicCharacterStateMachine.instance.TransitionToState(new Idle());
-        }     
+        }
     }
 
     //EXIT 
@@ -282,46 +281,49 @@ public class Sneak : States
     }
 }
 
-// [SerializeField]
-// public class Hide : States
-// {
-//     //Usamos el constructor y le pasamos todas las variables que necesita
-//     public SNEAK() : base()
-//     {
-//         //Se le pasa el nombre del estado que tiene que hacer
-//         stateName = STATE.SNEAK;
-//     }
+[SerializeField]
+public class Hide : States
+{
+    //Usamos el constructor y le pasamos todas las variables que necesita
+    public Hide() : base()
+    {
+        //Se le pasa el nombre del estado que tiene que hacer
+        stateName = STATE.HIDE;
+    }
 
-//     //ENTER
-//     public override void Enter()
-//     {
-//         //Hacemos la animación de Idle
-//         // anim.SetTrigger("isSNEAKing");
-//         //Llamamos al método Enter de la clase State
-//         base.Enter();
-//     }
+    //ENTER
+    public override void Enter()
+    {
+        BasicCharacterStateMachine.instance.Sneak();
+        //Llamamos al método Enter de la clase State
+        base.Enter();
+    }
 
-//     //UPDATE (IMPORTANTE: recordar dar salida al siguiente estado que pueda hacer)
-//     public override void Update()
-//     {
-//         BasicCharacterStateMachine.instance.MovementInput();
-//         BasicCharacterStateMachine.instance.moveDirection.y = BasicCharacterStateMachine.instance.SNEAKForce;
-//         BasicCharacterStateMachine.instance.isGrounded = false;
-//         BasicCharacterStateMachine.instance.rb.AddForce(Vector3.up * BasicCharacterStateMachine.instance.SNEAKForce, ForceMode.VelocityChange);
-//         //Pasamos a la caida automaticamente tras el salto
-//         BasicCharacterStateMachine.instance.TransitionToState(new Fall());
+    //UPDATE (IMPORTANTE: recordar dar salida al siguiente estado que pueda hacer)
+    public override void Update()
+    {
+        BasicCharacterStateMachine.instance.MovementInput(BasicCharacterStateMachine.instance.moveSpeed);
+        BasicCharacterStateMachine.instance.Grounded();
+        BasicCharacterStateMachine.instance.rb.velocity = BasicCharacterStateMachine.instance.moveDirection;
 
-//     }
+        if ((Input.GetButton("Sneak")))
+        {
+            //Si se sale del escondite vuelve a idle y a escala normal
+            BasicCharacterStateMachine.instance.ScaleBackToNormal();
+            BasicCharacterStateMachine.instance.TransitionToState(new Idle());
+        }
 
-//     //EXIT 
-//     public override void Exit()
-//     {
-//         //Para evitar errores de animación
-//         // anim.ResetTrigger("isIdle");
-//         //Llamamos al método Exit de la clase State
-//         base.Exit();
-//     }
-// }
+    }
+
+    //EXIT 
+    public override void Exit()
+    {
+        //Para evitar errores de animación
+        // anim.ResetTrigger("isIdle");
+        //Llamamos al método Exit de la clase State
+        base.Exit();
+    }
+}
 
 // [SerializeField]
 // public class PickUp : States
@@ -347,7 +349,7 @@ public class Sneak : States
 //     {
 //         if (BasicCharacterStateMachine.instance.pickingUp == false)
 //         {
-            
+
 //         }
 //         // Debug.Log("update");
 //         BasicCharacterStateMachine.instance.MovementInput();
