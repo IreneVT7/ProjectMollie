@@ -9,6 +9,8 @@ public class BasicCharacterStateMachine : MonoBehaviour
     [Header("Movement")]
     [Tooltip("Rigidbody del personaje")]
     public Rigidbody rb;
+    [Tooltip("Capsula del personaje")]
+    public CapsuleCollider coll;
     // [Tooltip("Animator del personaje")]
     // public Animator anim;
     [Tooltip("Velocidad a la que se mueve el personaje")]
@@ -62,7 +64,11 @@ public class BasicCharacterStateMachine : MonoBehaviour
     [HideInInspector]
     public bool hiding = false;
     [HideInInspector]
+    public bool canhide = false;
+    [HideInInspector]
     public bool interacting = false;
+    private Transform hideout;
+    private Vector3 lastPosition;
     #endregion 
     [Header("States")]
     [Tooltip("Estado actual del jugador")]
@@ -123,11 +129,11 @@ public class BasicCharacterStateMachine : MonoBehaviour
     public void PickUpOrDrop()
     {
         //si está mirando al objeto y hace input, que lo coja
-        if (camRayHit)
+        if (camRayHit && camHit.transform.gameObject.layer == LayerMask.NameToLayer("PickUp"))
         {
             if (Input.GetButtonDown("Fire1") && (cooldown == false))
             {
-                Debug.Log("object Picked");
+                // Debug.Log("object Picked");
                 // var obj = hit.collider.gameObject;
                 // obj.GetComponent<Rigidbody>().isKinematic = true;
                 // obj.transform.parent = pickUpParent.transform;
@@ -141,7 +147,7 @@ public class BasicCharacterStateMachine : MonoBehaviour
         //si ya tiene un objeto, le da al input y el cooldown se ha acabado, entonces que lo suelte
         else if (Input.GetButtonDown("Fire1") && (pickingUp == true) && (cooldown == false))
         {
-            Debug.Log("object Down");
+            // Debug.Log("object Down");
             // Debug.Log("unparented");
             // obj.transform.parent = null;
             // obj.GetComponent<Rigidbody>().isKinematic = false;
@@ -156,36 +162,31 @@ public class BasicCharacterStateMachine : MonoBehaviour
 
     public void Hide()
     {
-        //si está mirando al objeto y hace input, que se esconda
-        if (camRayHit)
+        if (Input.GetButtonDown("Fire1") && (cooldown == false) && (canhide == true))
         {
-            if (Input.GetButtonDown("Fire1") && (cooldown == false))
-            {
-                Debug.Log("object Picked");
-                // var obj = hit.collider.gameObject;
-                // obj.GetComponent<Rigidbody>().isKinematic = true;
-                // obj.transform.parent = pickUpParent.transform;
-                // obj.transform.position = pickUpParent.transform.position;
-                pickingUp = true;
-                //cooldown necesario para que no ocurra todo en el mismo frame
-                StartCoroutine(Cooldown(0.5f));
+            hiding = !hiding;
 
+            if (hiding)
+            {
+                //lo hace chiquito y lo emparenta al escondite             
+                lastPosition = transform.position;
+                transform.localScale = new Vector3(transform.localScale.x, 0.5f, transform.localScale.z);
+                transform.position = hideout.position;
+                coll.enabled = false;
+                rb.isKinematic = true;
             }
+            else
+            {
+                transform.localScale = new Vector3(transform.localScale.x, 1f, transform.localScale.z);
+                transform.position = lastPosition;
+                coll.enabled = true;
+                rb.isKinematic = false;
+            }
+            //cooldown necesario para que no ocurra todo en el mismo frame
+            StartCoroutine(Cooldown(0.5f));
+
         }
-        //si ya tiene un objeto, le da al input y el cooldown se ha acabado, entonces que lo suelte
-        else if (Input.GetButtonDown("Fire1") && (pickingUp == true) && (cooldown == false))
-        {
-            Debug.Log("object Down");
-            // Debug.Log("unparented");
-            // obj.transform.parent = null;
-            // obj.GetComponent<Rigidbody>().isKinematic = false;
-            pickingUp = false;
-        }
-        //si no está mirando, que el rayo sea rojo y ya esta
-        else
-        {
-            Debug.DrawRay(camRay.origin, camRay.direction * 4f, Color.red);
-        }
+
     }
 
     public void FlashlightOnOff()
@@ -257,6 +258,7 @@ public class BasicCharacterStateMachine : MonoBehaviour
         if (Physics.Raycast(camRay.origin, camRay.direction, out camHit, 4f, pickUpLayers))
         {
             Debug.DrawRay(camRay.origin, camRay.direction * 4f, Color.green);
+
             camRayHit = true;
         }
         else
@@ -279,6 +281,19 @@ public class BasicCharacterStateMachine : MonoBehaviour
         state.Exit();
         currentState = state;
         currentState.Enter();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.gameObject.layer == LayerMask.NameToLayer("Hideout"))
+        {
+            canhide = true;
+            hideout = other.gameObject.GetComponentInChildren<Escondite>().esconditeTransform;
+        }
+        else
+        {
+            canhide = false;
+        }
     }
 
 }

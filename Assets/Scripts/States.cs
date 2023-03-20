@@ -62,6 +62,7 @@ public class Idle : States
         //Tiene que hacer el movimiento en idle aunque no haya input para asi saber cuando cambia su velocidad.
         BasicCharacterStateMachine.instance.MovementInput(BasicCharacterStateMachine.instance.moveSpeed);
         BasicCharacterStateMachine.instance.Grounded();
+        BasicCharacterStateMachine.instance.Hide();
 
         if (BasicCharacterStateMachine.instance.moveDirection != Vector3.zero)
         {
@@ -123,6 +124,7 @@ public class Run : States
         BasicCharacterStateMachine.instance.MovementInput(BasicCharacterStateMachine.instance.moveSpeed);
         BasicCharacterStateMachine.instance.Grounded();
         BasicCharacterStateMachine.instance.rb.velocity = BasicCharacterStateMachine.instance.moveDirection;
+        BasicCharacterStateMachine.instance.Hide();
 
         if (BasicCharacterStateMachine.instance.moveDirection == Vector3.zero)
         {
@@ -236,6 +238,7 @@ public class Sneak : States
         BasicCharacterStateMachine.instance.Grounded();
         BasicCharacterStateMachine.instance.GravityApply();
         BasicCharacterStateMachine.instance.rb.velocity = BasicCharacterStateMachine.instance.moveDirection;
+        BasicCharacterStateMachine.instance.Hide();
 
         if (Input.GetButton("Sneak"))
         {
@@ -294,7 +297,6 @@ public class Hide : States
     //ENTER
     public override void Enter()
     {
-        BasicCharacterStateMachine.instance.Sneak();
         //Llamamos al método Enter de la clase State
         base.Enter();
     }
@@ -302,14 +304,11 @@ public class Hide : States
     //UPDATE (IMPORTANTE: recordar dar salida al siguiente estado que pueda hacer)
     public override void Update()
     {
-        BasicCharacterStateMachine.instance.MovementInput(BasicCharacterStateMachine.instance.moveSpeed);
-        BasicCharacterStateMachine.instance.Grounded();
-        BasicCharacterStateMachine.instance.rb.velocity = BasicCharacterStateMachine.instance.moveDirection;
+        BasicCharacterStateMachine.instance.Hide();
 
-        if ((Input.GetButton("Sneak")))
+        if (BasicCharacterStateMachine.instance.hiding == false)
         {
             //Si se sale del escondite vuelve a idle y a escala normal
-            BasicCharacterStateMachine.instance.ScaleBackToNormal();
             BasicCharacterStateMachine.instance.TransitionToState(new Idle());
         }
 

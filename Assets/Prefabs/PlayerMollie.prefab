@@ -690,7 +690,7 @@ GameObject:
   - component: {fileID: 6402953791107186451}
   - component: {fileID: 6402953791107186448}
   - component: {fileID: 6402953791107186460}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: PlayerMollie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -756,10 +756,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 6402953791107186451}
+  coll: {fileID: 6402953791107186450}
   moveSpeed: 9
   sneakMoveSpeed: 3
   moveDirection: {x: 0, y: 0, z: 0}
-  gravityScale: 5
+  gravityScale: 10
   isGrounded: 0
   groundCheckDistance: 0.64
   groundCheckOffset: 0.24
@@ -779,10 +780,12 @@ MonoBehaviour:
   FPCamera: {fileID: 7504977004430195581}
   yawController: {fileID: 7504977004430195577}
   flashlightON: 0
+  camRayHit: 0
   pickingUp: 0
   cooldown: 0
   sneaking: 0
   hiding: 0
+  canhide: 0
   interacting: 0
   currentState:
     stateName: 0
