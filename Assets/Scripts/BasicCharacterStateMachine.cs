@@ -38,10 +38,6 @@ public class BasicCharacterStateMachine : MonoBehaviour
     public LayerMask groundLayers;
     [Tooltip("Capa con las cosas con las que se puede interactuar, como el peluche")]
     public LayerMask interactLayers;
-    [Tooltip("Capa con los lugares de escondite")]
-    public LayerMask hidePlaceLayers;
-    [Tooltip("Capa con las cosas que se pueden recoger")]
-    public LayerMask pickUpLayers;
     #endregion 
     #region MiscVAR
     [Header("Misc")]
@@ -56,7 +52,7 @@ public class BasicCharacterStateMachine : MonoBehaviour
     [HideInInspector]
     public bool camRayHit = false;
     [HideInInspector]
-    public bool pickingUp = false;
+    public bool interacting = false;
     [HideInInspector]
     public bool cooldown = false;
     [HideInInspector]
@@ -65,8 +61,6 @@ public class BasicCharacterStateMachine : MonoBehaviour
     public bool hiding = false;
     [HideInInspector]
     public bool canhide = false;
-    [HideInInspector]
-    public bool interacting = false;
     private Transform hideout;
     private Vector3 lastPosition;
     #endregion 
@@ -126,43 +120,72 @@ public class BasicCharacterStateMachine : MonoBehaviour
         transform.localScale = new Vector3(transform.localScale.x, 1f, transform.localScale.z);
     }
 
-    public void PickUpOrDrop()
+    public void Interaction()
     {
-        //si está mirando al objeto y hace input, que lo coja
-        if (camRayHit && camHit.transform.gameObject.layer == LayerMask.NameToLayer("PickUp"))
+        //si está mirando al objeto y hace input, que interactue
+        if (camRayHit && Input.GetButtonDown("Fire1") && (cooldown == false))
         {
-            if (Input.GetButtonDown("Fire1") && (cooldown == false))
+            interacting = true;
+
+            //...o bien cogiendo el objeto
+            if (camHit.transform.gameObject.layer == LayerMask.NameToLayer("PickUp"))
             {
-                // Debug.Log("object Picked");
-                // var obj = hit.collider.gameObject;
-                // obj.GetComponent<Rigidbody>().isKinematic = true;
-                // obj.transform.parent = pickUpParent.transform;
-                // obj.transform.position = pickUpParent.transform.position;
-                pickingUp = true;
-                //cooldown necesario para que no ocurra todo en el mismo frame
-                StartCoroutine(Cooldown(0.5f));
+                Debug.Log("object Picked");
 
             }
+            //...o bien inspeccionandolo
+            else if (camHit.transform.gameObject.layer == LayerMask.NameToLayer("Interact"))
+            {
+                Debug.Log("interacted");
+                camHit.transform.gameObject.GetComponentInChildren<InteractableBehaviour>().interactingThisFrame = true;
+
+            }
+            //cooldown necesario para que no ocurra todo en el mismo frame
+            StartCoroutine(Cooldown(0.5f));
         }
-        //si ya tiene un objeto, le da al input y el cooldown se ha acabado, entonces que lo suelte
-        else if (Input.GetButtonDown("Fire1") && (pickingUp == true) && (cooldown == false))
-        {
-            // Debug.Log("object Down");
-            // Debug.Log("unparented");
-            // obj.transform.parent = null;
-            // obj.GetComponent<Rigidbody>().isKinematic = false;
-            pickingUp = false;
-        }
-        //si no está mirando, que el rayo sea rojo y ya esta
         else
         {
-            Debug.DrawRay(camRay.origin, camRay.direction * 4f, Color.red);
+            interacting = false;
         }
     }
 
+    // public void PickUpOrDrop()
+    // {
+    //     //si está mirando al objeto y hace input, que lo coja
+    //     if (camRayHit && camHit.transform.gameObject.layer == LayerMask.NameToLayer("PickUp"))
+    //     {
+    //         if (Input.GetButtonDown("Fire1") && (cooldown == false))
+    //         {
+    //             // Debug.Log("object Picked");
+    //             // var obj = hit.collider.gameObject;
+    //             // obj.GetComponent<Rigidbody>().isKinematic = true;
+    //             // obj.transform.parent = pickUpParent.transform;
+    //             // obj.transform.position = pickUpParent.transform.position;
+    //             pickingUp = true;
+    //             //cooldown necesario para que no ocurra todo en el mismo frame
+    //             StartCoroutine(Cooldown(0.5f));
+
+    //         }
+    //     }
+    //     //si ya tiene un objeto, le da al input y el cooldown se ha acabado, entonces que lo suelte
+    //     else if (Input.GetButtonDown("Fire1") && (pickingUp == true) && (cooldown == false))
+    //     {
+    //         // Debug.Log("object Down");
+    //         // Debug.Log("unparented");
+    //         // obj.transform.parent = null;
+    //         // obj.GetComponent<Rigidbody>().isKinematic = false;
+    //         pickingUp = false;
+    //     }
+    //     //si no está mirando, que el rayo sea rojo y ya esta
+    //     else
+    //     {
+    //         Debug.DrawRay(camRay.origin, camRay.direction * 4f, Color.red);
+    //     }
+    // }
+
     public void Hide()
     {
-        if (Input.GetButtonDown("Fire1") && (cooldown == false) && (canhide == true))
+        if (Input.GetKeyDown(KeyCode.E) && (cooldown == false) && (canhide == true))
         {
             hiding = !hiding;
 
@@ -255,7 +278,7 @@ public class BasicCharacterStateMachine : MonoBehaviour
         //Raycast desde el centro de la camara para comprobar a que está mirando y si puede interactuar o no
         Vector3 pos = new Vector3(960, 540, 0);
         camRay = FPCamera.ScreenPointToRay(pos);
-        if (Physics.Raycast(camRay.origin, camRay.direction, out camHit, 4f, pickUpLayers))
+        if (Physics.Raycast(camRay.origin, camRay.direction, out camHit, 4f, interactLayers))
         {
             Debug.DrawRay(camRay.origin, camRay.direction * 4f, Color.green);
 
@@ -266,12 +289,9 @@ public class BasicCharacterStateMachine : MonoBehaviour
             Debug.DrawRay(camRay.origin, camRay.direction * 4f, Color.red);
             camRayHit = false;
         }
-        //segun lo que pille en el raycast, podrá recoger objetos...
-        PickUpOrDrop();
-        //...usar objetos
-        //...interactuar con cosas
-        //...esconderse
 
+        //revisa en cada frame si se puede interactuar o no
+        Interaction();
 
     }
 
