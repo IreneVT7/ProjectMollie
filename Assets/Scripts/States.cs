@@ -69,7 +69,7 @@ public class Idle : States
             //Si se mueve pasamos a correr
             BasicCharacterStateMachine.instance.TransitionToState(new Run());
         }
-        else if (BasicCharacterStateMachine.instance.pickingUp == true)
+        else if (BasicCharacterStateMachine.instance.interacting == true)
         {
             //Si esta cerca de algo y pulsamos el boton pasamos a recogerlo
         }
@@ -131,7 +131,7 @@ public class Run : States
             //Si NO se mueve pasamos a idle
             BasicCharacterStateMachine.instance.TransitionToState(new Idle());
         }
-        else if (BasicCharacterStateMachine.instance.pickingUp == true)
+        else if (BasicCharacterStateMachine.instance.interacting == true)
         {
             //Si esta cerca de algo y pulsamos el boton pasamos a recogerlo
         }
@@ -254,7 +254,7 @@ public class Sneak : States
                 //Si esta cerca de un escondite, que pase a esconderse
                 // BasicCharacterStateMachine.instance.TransitionToState(new PickUp());
             }
-            else if (BasicCharacterStateMachine.instance.pickingUp == true)
+            else if (BasicCharacterStateMachine.instance.interacting == true)
             {
                 BasicCharacterStateMachine.instance.ScaleBackToNormal();
                 //Si esta cerca de algo y pulsamos el boton pasamos a recogerlo
