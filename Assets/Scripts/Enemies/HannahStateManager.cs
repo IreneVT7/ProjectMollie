@@ -8,6 +8,7 @@ public class HannahStateManager : MonoBehaviour
 {
     public float speed = 5f;
     public float chasingSpeed = 8f;
+    public float chaseDuration;
 
     public static HannahStateManager instance;
     public Animator anim;
@@ -66,6 +67,7 @@ public class HannahStateManager : MonoBehaviour
         anim.SetTrigger("isIdle");
     }
 
+    #region Detection
     public void DetectCharacter()
     {
         //Guardamos todos los objetos encontrados con el overlap
@@ -97,17 +99,56 @@ public class HannahStateManager : MonoBehaviour
         //Si el array está vacío, no ha encontrado nada
         else
         {
-            //Dejamos el target a null para que deje de perseguirlo
-            target = null;
+            StartCoroutine(stopChasing());
         }
     }
 
-    public void Patrol()
+    public void DetectCharacterAudio()
+    {
+        //Guardamos los objetos encontrados en el array con overlapsphere
+        Collider[] _targets = Physics.OverlapSphere(transform.position, visionRange, targetLayer);
+        if (_targets.Length > 0)
+        {
+            Debug.Log("SE HA DETECTADO " + _targets.Length + " ENEMIGO");
+            Vector3 _targetDir = _targets[0].transform.position - rayOrigin.position;
+            if (BasicCharacterStateMachine.instance.moveSpeed <= 4f)
+            {
+                //Lanzamos un rayo desde el enemigo hacia el jugador para comprobar si esta
+                //escondido detras de alguna pared u obstaculo
+                //Sumamos un Offset al origen en el eje Y para que no lance el rayo desde los pies
+                if (Physics.Raycast(rayOrigin.position, _targetDir.normalized,
+                    _targetDir.magnitude, obstacleLayer) == false)
+                {
+                    target = _targets[0].transform;
+                }
+
+            }
+            //Dibujamos el rayo que comprueba si esta tras un obstaculo
+            //Sumamos un offset al origen en el eje Y para que no lance el rayo desde los pies
+            Debug.DrawRay(rayOrigin.position, _targetDir, Color.blue);
+        }
+    }
+
+    public void RoomDetection()
     {
         //Escoge una localizacion dentro del array
         randomRoom = Random.Range(0, rooms.Length);
+        if (rooms.Length <= 0)
+        {
+            return;
+        }
         //La posicion del centro de la habitacion se coloca en la posicion escogida
         centrePoint.position = rooms[randomRoom].transform.position;
+    }
+    #endregion
+
+    #region Patrolling
+    public void Patrol()
+    {
+        if (rooms.Length <= 0)
+        {
+            return;
+        }
         //Se establece el destino del agente
         agent.SetDestination(rooms[randomRoom].transform.position);
         //Se activa la animacion de andar
@@ -139,6 +180,7 @@ public class HannahStateManager : MonoBehaviour
         result = Vector3.zero;
         return false;
     }
+    #endregion
 
     public void Chase()
     {
@@ -146,7 +188,17 @@ public class HannahStateManager : MonoBehaviour
         {
             agent.SetDestination(target.position);
             agent.speed = chasingSpeed;
+            if (agent.remainingDistance <= 1f)
+            {
+                agent.velocity = Vector3.zero;
+            }
         }
+    }
+
+    IEnumerator stopChasing()
+    {
+        yield return new WaitForSeconds(chaseDuration);
+        target = null;
     }
 
     private void OnDrawGizmos()

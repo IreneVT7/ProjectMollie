@@ -62,6 +62,7 @@ public class State
         public override void Update()
         {
             HannahStateManager.instance.DetectCharacter();
+            HannahStateManager.instance.DetectCharacterAudio();
             if (HannahStateManager.instance.target != null)
             {
                 nextState = new Chase();
@@ -92,13 +93,18 @@ public class State
         {
             HannahStateManager.instance.rooms = GameObject.FindGameObjectsWithTag("Room");
             Debug.Log("Patrol");
-            HannahStateManager.instance.Patrol();
+            if (HannahStateManager.instance.agent.remainingDistance <= .1f)
+            {
+                HannahStateManager.instance.Patrol();
+            }
             base.Start();
         }
 
         public override void Update()
         {
             HannahStateManager.instance.DetectCharacter();
+            HannahStateManager.instance.DetectCharacterAudio();
+            HannahStateManager.instance.RoomDetection();
             if (HannahStateManager.instance.agent.remainingDistance <= .1f)
             {
                 nextState = new RoomPatrol();
@@ -149,7 +155,7 @@ public class State
             }
             if (counter <= .1f)
             {
-                nextState = new Patrol();
+                nextState = new IdleHannah();
                 stage = EVENTS.EXIT;
             }
         }
@@ -175,6 +181,7 @@ public class State
         public override void Update()
         {
             HannahStateManager.instance.DetectCharacter();
+            HannahStateManager.instance.DetectCharacterAudio();
             HannahStateManager.instance.Chase();
             if (HannahStateManager.instance.target == null)
             {
