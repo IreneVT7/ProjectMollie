@@ -194,15 +194,14 @@ public class BasicCharacterStateMachine : MonoBehaviour
                 //lo hace chiquito y lo emparenta al escondite             
                 lastPosition = transform.position;
                 transform.localScale = new Vector3(transform.localScale.x, 0.5f, transform.localScale.z);
-                LeanTween.move(this.gameObject, hideout.position, 0.5f).setEase(LeanTweenType.easeOutCirc);
-                //transform.position = hideout.position;
+                StartCoroutine(LeanIn());
                 coll.enabled = false;
                 rb.isKinematic = true;
             }
             else
             {
                 transform.localScale = new Vector3(transform.localScale.x, 1f, transform.localScale.z);
-                //transform.position = lastPosition;
+                // transform.position = lastPosition;
                 LeanTween.move(this.gameObject, lastPosition, 0.5f).setEase(LeanTweenType.easeOutCirc);
                 coll.enabled = true;
                 rb.isKinematic = false;
@@ -233,6 +232,15 @@ public class BasicCharacterStateMachine : MonoBehaviour
         cooldown = true;
         yield return new WaitForSeconds(sec);
         cooldown = false;
+    }
+
+    IEnumerator LeanIn()
+    {
+        LeanTween.move(this.gameObject, hideout.position, 0.5f).setEase(LeanTweenType.easeOutCirc);
+        LeanTween.rotate(this.gameObject, hideout.localRotation.eulerAngles, 0.5f).setEase(LeanTweenType.easeOutCirc);
+        yield return null;
+        // yield return new WaitForSeconds(0.5f);
+        transform.rotation = hideout.rotation;
     }
 
 
