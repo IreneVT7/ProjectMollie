@@ -105,6 +105,8 @@ public class State
             HannahStateManager.instance.DetectCharacter();
             HannahStateManager.instance.DetectCharacterAudio();
             HannahStateManager.instance.RoomDetection();
+            HannahStateManager.instance.rooms = GameObject.FindGameObjectsWithTag("Room");
+            HannahStateManager.instance.waypoints = GameObject.FindGameObjectsWithTag("WayPoints");
             if (HannahStateManager.instance.agent.remainingDistance <= .1f)
             {
                 nextState = new RoomPatrol();
@@ -134,6 +136,7 @@ public class State
 
         public override void Start()
         {
+            HannahStateManager.instance.waypoints = GameObject.FindGameObjectsWithTag("WayPoints");
             Debug.Log("Room Patrol");
             base.Start();
             counter = 10f;
@@ -143,6 +146,7 @@ public class State
         {
             HannahStateManager.instance.RoomPatrol();
             HannahStateManager.instance.DetectCharacter();
+            HannahStateManager.instance.waypoints = GameObject.FindGameObjectsWithTag("WayPoints");
             if (HannahStateManager.instance.target != null)
             {
                 nextState = new Chase();

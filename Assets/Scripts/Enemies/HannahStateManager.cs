@@ -27,6 +27,9 @@ public class HannahStateManager : MonoBehaviour
     #region patrolVAR
     [Header("Patrullaje")]
     public GameObject[] rooms;
+    public GameObject[] waypoints;
+    public int roomWayPoints = 0;
+    public int maxRoomWP;
     public float counter = 10f;
     public Transform centrePoint;
     public float range;
@@ -60,7 +63,6 @@ public class HannahStateManager : MonoBehaviour
     private void Update()
     {
         currentState = currentState.Process();
-        rooms = GameObject.FindGameObjectsWithTag("Room");
     }
     public void Idle()
     {
@@ -138,7 +140,7 @@ public class HannahStateManager : MonoBehaviour
             return;
         }
         //La posicion del centro de la habitacion se coloca en la posicion escogida
-        centrePoint.position = rooms[randomRoom].transform.position;
+        centrePoint.position = rooms[randomRoom].transform.position + new Vector3(0,1,0);
     }
     #endregion
 
@@ -157,28 +159,16 @@ public class HannahStateManager : MonoBehaviour
 
     public void RoomPatrol()
     {
+        maxRoomWP = waypoints.Length;
         if (agent.remainingDistance <= .1f)
         {
-            Vector3 point;
-            if (randomPoint(centrePoint.position, range, out point))
+            agent.SetDestination(waypoints[roomWayPoints].transform.position);
+            roomWayPoints += 1;
+            if (roomWayPoints == maxRoomWP)
             {
-                Debug.DrawRay(point, Vector3.up, Color.red, 1f);
-                agent.SetDestination(point);
+                roomWayPoints = 0;
             }
         }
-    }
-    bool randomPoint(Vector3 center, float range, out Vector3 result)
-    {
-        Vector3 RandomPoint = center + Random.insideUnitSphere * range;
-        NavMeshHit hit;
-
-        if (NavMesh.SamplePosition(RandomPoint, out hit, 2f, NavMesh.AllAreas))
-        {
-            result = hit.position;
-            return true;
-        }
-        result = Vector3.zero;
-        return false;
     }
     #endregion
 
