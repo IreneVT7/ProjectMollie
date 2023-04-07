@@ -31,11 +31,11 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void MeterEnLista(GameObject pickUp, bool biberon)
+    public void MeterEnLista(GameObject pickUp)
     {
         pickUps.Add(pickUp);
     }
-    public void QuitarDeLista(GameObject pickUp, bool biberon)
+    public void QuitarDeLista(GameObject pickUp)
     {
         pickUps.Remove(pickUp);
     }

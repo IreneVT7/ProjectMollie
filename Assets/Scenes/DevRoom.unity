@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 1478.8739, g: 1831.6617, b: 2424.8467, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -308,6 +308,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   esconditeTransform: {fileID: 733298688}
+  agacharse: 1
 --- !u!1 &390320770
 GameObject:
   m_ObjectHideFlags: 0
@@ -1803,6 +1804,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   esconditeTransform: {fileID: 431759672}
+  agacharse: 0
 --- !u!54 &1477439433
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1975,6 +1977,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   esconditeTransform: {fileID: 760557005}
+  agacharse: 1
 --- !u!54 &1579217822
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -62,6 +62,7 @@ public class BasicCharacterStateMachine : MonoBehaviour
     //as[HideInInspector]
     public bool canhide = false;
     private Transform hideout;
+    private bool hideoutAgacharse;
     public Vector3 lastPosition;
     #endregion 
     [Header("States")]
@@ -193,7 +194,14 @@ public class BasicCharacterStateMachine : MonoBehaviour
             {
                 //lo hace chiquito y lo emparenta al escondite             
                 lastPosition = transform.position;
-                transform.localScale = new Vector3(transform.localScale.x, 0.5f, transform.localScale.z);
+                if (hideoutAgacharse)
+                {
+                    transform.localScale = new Vector3(transform.localScale.x, 0.5f, transform.localScale.z);
+                }
+                else
+                {
+                    transform.localScale = new Vector3(transform.localScale.x, 1f, transform.localScale.z);
+                }
                 StartCoroutine(LeanIn());
                 coll.enabled = false;
                 rb.isKinematic = true;
@@ -319,6 +327,7 @@ public class BasicCharacterStateMachine : MonoBehaviour
         {
             canhide = true;
             hideout = other.gameObject.GetComponentInChildren<Escondite>().esconditeTransform;
+            hideoutAgacharse = other.gameObject.GetComponentInChildren<Escondite>().agacharse;
         }
         else
         {
