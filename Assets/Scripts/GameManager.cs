@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private List<GameObject> pickUps = new List<GameObject>();
+    [HideInInspector] public bool hasKey;
+    [HideInInspector] public bool hasBiberon;
+    [HideInInspector] public bool hasTrain;
+
 
     public static GameManager instance;
     private void Awake()
@@ -31,13 +34,10 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void MeterEnLista(GameObject pickUp)
+    public void NotifyEvent(string text)
     {
-        pickUps.Add(pickUp);
+        Debug.Log(text);
     }
-    public void QuitarDeLista(GameObject pickUp)
-    {
-        pickUps.Remove(pickUp);
-    }
+
 
 }

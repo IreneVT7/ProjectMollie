@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractableBehaviour : MonoBehaviour
+public class InspectionBehaviour : MonoBehaviour
 {
     public BasicCharacterStateMachine basicCharacterStateMachine;
     public YawController yawController;
