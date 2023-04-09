@@ -83,6 +83,11 @@ public class Idle : States
             //Si no detecta suelo entonces se cae
             BasicCharacterStateMachine.instance.TransitionToState(new Fall());
         }
+        else if (BasicCharacterStateMachine.instance.hiding == true)
+        {
+            //Si se esconde, que pase al estado se esconder
+            BasicCharacterStateMachine.instance.TransitionToState(new Hide());
+        }
 
         base.Update();
 
@@ -144,6 +149,11 @@ public class Run : States
         {
             //Si no detecta suelo entonces se cae
             BasicCharacterStateMachine.instance.TransitionToState(new Fall());
+        }
+        else if (BasicCharacterStateMachine.instance.hiding == true)
+        {
+            //Si se esconde, que pase al estado se esconder
+            BasicCharacterStateMachine.instance.TransitionToState(new Hide());
         }
 
     }
@@ -265,6 +275,11 @@ public class Sneak : States
                 BasicCharacterStateMachine.instance.ScaleBackToNormal();
                 //Si esta cerca de algo interactuable, pasamos a interactuar
                 // BasicCharacterStateMachine.instance.TransitionToState(new PickUp());
+            }
+            else if (BasicCharacterStateMachine.instance.hiding == true)
+            {
+                //Si se esconde, que pase al estado se esconder
+                BasicCharacterStateMachine.instance.TransitionToState(new Hide());
             }
         }
         else

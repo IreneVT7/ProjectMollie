@@ -62,6 +62,7 @@ public class BasicCharacterStateMachine : MonoBehaviour
     //as[HideInInspector]
     public bool canhide = false;
     private Transform hideout;
+    private bool hideoutAgacharse;
     public Vector3 lastPosition;
     #endregion 
     [Header("States")]
@@ -130,15 +131,18 @@ public class BasicCharacterStateMachine : MonoBehaviour
             //...o bien cogiendo el objeto
             if (camHit.transform.gameObject.layer == LayerMask.NameToLayer("PickUp"))
             {
-                Debug.Log("object Picked");
-
+                camHit.transform.GetComponentInChildren<PickUpBehaviour>().interacted = true;
             }
-            //...o bien inspeccionandolo
+            //...o bien interactuando..
             else if (camHit.transform.gameObject.layer == LayerMask.NameToLayer("Interact"))
             {
-                Debug.Log("interacted");
-                camHit.transform.gameObject.GetComponentInChildren<InteractableBehaviour>().interactingThisFrame = true;
-
+                camHit.transform.GetComponentInChildren<InteractionBehaviour>().interacted = true;
+            }
+            //...o bien inspeccionandolo
+            else if (camHit.transform.gameObject.layer == LayerMask.NameToLayer("Inspect"))
+            {
+                Debug.Log("inspecting");
+                camHit.transform.gameObject.GetComponentInChildren<InspectionBehaviour>().interactingThisFrame = true;
             }
             //cooldown necesario para que no ocurra todo en el mismo frame
             StartCoroutine(Cooldown(0.5f));
@@ -193,7 +197,14 @@ public class BasicCharacterStateMachine : MonoBehaviour
             {
                 //lo hace chiquito y lo emparenta al escondite             
                 lastPosition = transform.position;
-                transform.localScale = new Vector3(transform.localScale.x, 0.5f, transform.localScale.z);
+                if (hideoutAgacharse)
+                {
+                    transform.localScale = new Vector3(transform.localScale.x, 0.5f, transform.localScale.z);
+                }
+                else
+                {
+                    transform.localScale = new Vector3(transform.localScale.x, 1f, transform.localScale.z);
+                }
                 StartCoroutine(LeanIn());
                 coll.enabled = false;
                 rb.isKinematic = true;
@@ -319,6 +330,7 @@ public class BasicCharacterStateMachine : MonoBehaviour
         {
             canhide = true;
             hideout = other.gameObject.GetComponentInChildren<Escondite>().esconditeTransform;
+            hideoutAgacharse = other.gameObject.GetComponentInChildren<Escondite>().agacharse;
         }
         else
         {
