@@ -90,8 +90,9 @@ public class State
         }
 
         public override void Start()
-        {
+        {            
             HannahStateManager.instance.rooms = GameObject.FindGameObjectsWithTag("Room");
+            HannahStateManager.instance.centrePoint.position = HannahStateManager.instance.rooms[HannahStateManager.instance.randomRoom].transform.position + new Vector3(0, 1, 0);
             Debug.Log("Patrol");
             if (HannahStateManager.instance.agent.remainingDistance <= .1f)
             {
@@ -102,12 +103,13 @@ public class State
 
         public override void Update()
         {
+            HannahStateManager.instance.RoomDetection();
             HannahStateManager.instance.DetectCharacter();
             HannahStateManager.instance.DetectCharacterAudio();
-            HannahStateManager.instance.RoomDetection();
+
             HannahStateManager.instance.rooms = GameObject.FindGameObjectsWithTag("Room");
             HannahStateManager.instance.waypoints = GameObject.FindGameObjectsWithTag("WayPoints");
-            if (HannahStateManager.instance.agent.remainingDistance <= .1f)
+            if (HannahStateManager.instance.agent.remainingDistance <= 1f)
             {
                 nextState = new RoomPatrol();
                 stage = EVENTS.EXIT;
@@ -138,8 +140,8 @@ public class State
         {
             HannahStateManager.instance.waypoints = GameObject.FindGameObjectsWithTag("WayPoints");
             Debug.Log("Room Patrol");
+            counter = 20f;
             base.Start();
-            counter = 10f;
         }
 
         public override void Update()
@@ -184,14 +186,23 @@ public class State
         }
         public override void Update()
         {
-            HannahStateManager.instance.DetectCharacter();
-            HannahStateManager.instance.DetectCharacterAudio();
-            HannahStateManager.instance.Chase();
-            if (HannahStateManager.instance.target == null)
+            if (BasicCharacterStateMachine.instance.hiding == false)
+            {
+                HannahStateManager.instance.DetectCharacter();
+                HannahStateManager.instance.DetectCharacterAudio();
+                HannahStateManager.instance.Chase();
+                if (HannahStateManager.instance.target == null)
+                {
+                    nextState = new Patrol();
+                    stage = EVENTS.EXIT;
+                }
+            }
+            else if(HannahStateManager.instance.target == null)
             {
                 nextState = new Patrol();
                 stage = EVENTS.EXIT;
             }
+            
         }
 
         public override void Exit()

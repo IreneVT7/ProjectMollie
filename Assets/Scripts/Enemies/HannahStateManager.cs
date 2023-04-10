@@ -139,8 +139,7 @@ public class HannahStateManager : MonoBehaviour
         {
             return;
         }
-        //La posicion del centro de la habitacion se coloca en la posicion escogida
-        centrePoint.position = rooms[randomRoom].transform.position + new Vector3(0,1,0);
+        
     }
     #endregion
 
@@ -162,12 +161,7 @@ public class HannahStateManager : MonoBehaviour
         maxRoomWP = waypoints.Length;
         if (agent.remainingDistance <= .1f)
         {
-            agent.SetDestination(waypoints[roomWayPoints].transform.position);
-            roomWayPoints += 1;
-            if (roomWayPoints == maxRoomWP)
-            {
-                roomWayPoints = 0;
-            }
+            StartCoroutine(RoomPatrolDelay());           
         }
     }
     #endregion
@@ -189,6 +183,16 @@ public class HannahStateManager : MonoBehaviour
     {
         yield return new WaitForSeconds(chaseDuration);
         target = null;
+    }
+    IEnumerator RoomPatrolDelay()
+    {
+        yield return new WaitForSeconds(.1f);
+        agent.SetDestination(waypoints[roomWayPoints].transform.position);
+        roomWayPoints += 1;
+        if (roomWayPoints == maxRoomWP)
+        {
+            roomWayPoints = 0;
+        }
     }
 
     private void OnDrawGizmos()
