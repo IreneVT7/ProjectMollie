@@ -9,6 +9,10 @@ public class HannahStateManager : MonoBehaviour
     public float speed = 5f;
     public float chasingSpeed = 8f;
     public float chaseDuration;
+    public float timeToAttack;
+    public float maxTime;
+    public float attackRange;
+    public float rotationSpeed;
 
     public static HannahStateManager instance;
     public Animator anim;
@@ -178,7 +182,16 @@ public class HannahStateManager : MonoBehaviour
             }
         }
     }
-
+    public void LookAtTarget()
+    {
+        //Calculamos la direccion con respecto al target
+        Vector3 _direction = target.position - transform.position;
+        //Hay que poner la Y en 0 para que solo haga el LookAt en el eje Y
+        _direction.y = 0;
+        //Orientamos al personaje para que mire hacia esa direccion
+        Quaternion _rot = Quaternion.LookRotation(_direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, _rot, Time.deltaTime * rotationSpeed);
+    }
     IEnumerator stopChasing()
     {
         yield return new WaitForSeconds(chaseDuration);
@@ -193,6 +206,13 @@ public class HannahStateManager : MonoBehaviour
         {
             roomWayPoints = 0;
         }
+    }
+
+    public float GetDistanceToTarget()
+    {
+        //Calculamos la direccion con respecto al target y devolvemos la distancia hacia el
+        Vector3 _direction = target.position - transform.position;
+        return _direction.sqrMagnitude;
     }
 
     private void OnDrawGizmos()

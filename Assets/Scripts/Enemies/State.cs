@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.AI;
 
 public class State
@@ -202,7 +203,54 @@ public class State
                 nextState = new Patrol();
                 stage = EVENTS.EXIT;
             }
-            
+
+            if (HannahStateManager.instance.GetDistanceToTarget() < HannahStateManager.instance.attackRange * HannahStateManager.instance.attackRange)
+            {
+                nextState = new Attack();
+                stage = EVENTS.EXIT;
+            }
+
+
+        }
+
+        public override void Exit()
+        {
+            base.Exit();
+        }
+    }
+
+    public class Attack : State
+    {
+        public Attack(): base()
+        {
+            name = STATES.ATTACK;
+        }
+        public override void Start()
+        {
+            HannahStateManager.instance.timeToAttack = HannahStateManager.instance.maxTime;
+            HannahStateManager.instance.anim.SetTrigger("isAttacking");
+            base.Start();
+        }
+        public override void Update()
+        {
+            HannahStateManager.instance.DetectCharacter();
+            HannahStateManager.instance.DetectCharacterAudio();
+            HannahStateManager.instance.agent.velocity = Vector3.zero;
+            if (HannahStateManager.instance.timeToAttack > 0f)
+            {
+                HannahStateManager.instance.timeToAttack -= Time.deltaTime;
+            }
+            if (HannahStateManager.instance.timeToAttack <= 0f)
+            {
+                HannahStateManager.instance.timeToAttack = HannahStateManager.instance.maxTime;
+                SceneManager.LoadScene(1);
+            }
+
+            if (HannahStateManager.instance.GetDistanceToTarget() > HannahStateManager.instance.attackRange * HannahStateManager.instance.attackRange)
+            {
+                nextState = new Chase();
+                stage = EVENTS.EXIT;
+            }
         }
 
         public override void Exit()
