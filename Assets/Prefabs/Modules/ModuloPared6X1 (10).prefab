@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2362644117913904414}
   - component: {fileID: 1686061343970667195}
   - component: {fileID: 3495603178982039153}
+  - component: {fileID: -454169422721689576}
   m_Layer: 0
   m_Name: ModuloPared6X1 (10)
   m_TagString: Untagged
@@ -81,3 +82,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &-454169422721689576
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3135100048268656548}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2954858793080512207, guid: 0249483595ea05a489572e860368538f, type: 3}

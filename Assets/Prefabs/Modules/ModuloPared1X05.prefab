@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5005449169838866474}
   - component: {fileID: 8275706172066631567}
   - component: {fileID: 6142278373996165957}
+  - component: {fileID: -4756111813383173975}
   m_Layer: 0
   m_Name: ModuloPared1X05
   m_TagString: Untagged
@@ -59,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 71906749b82715c4ba45cdf0bf532301, type: 2}
+  - {fileID: 2100000, guid: cc48aa7b038d29842b8437ef448cd69b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -81,3 +82,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &-4756111813383173975
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5637730286716672656}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 3822247309040838107, guid: 080ca79b543d3984ca624ccc15827ede, type: 3}
