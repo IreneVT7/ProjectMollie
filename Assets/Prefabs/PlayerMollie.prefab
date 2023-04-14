@@ -819,7 +819,7 @@ MonoBehaviour:
     m_Bits: 8
   interactLayers:
     serializedVersion: 2
-    m_Bits: 192
+    m_Bits: 16576
   flashlight: {fileID: 6402953790737486748}
   FPCamera: {fileID: 7504977004430195581}
   yawController: {fileID: 7504977004430195577}
@@ -830,6 +830,7 @@ MonoBehaviour:
   sneaking: 0
   hiding: 0
   canhide: 0
+  lastPosition: {x: 0, y: 0, z: 0}
   currentState:
     stateName: 0
 --- !u!114 &6402953791107186460
