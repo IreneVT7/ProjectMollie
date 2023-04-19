@@ -206,7 +206,11 @@ public class BasicCharacterStateMachine : MonoBehaviour
                     transform.localScale = new Vector3(transform.localScale.x, 1f, transform.localScale.z);
                 }
                 StartCoroutine(LeanIn());
-                coll.enabled = false;
+                if (!HannahStateManager.instance.detected)
+                {
+                    coll.enabled = false;
+                }
+                
                 rb.isKinematic = true;
             }
             else

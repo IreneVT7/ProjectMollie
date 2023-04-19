@@ -7,6 +7,7 @@ public class WaypointLocator : MonoBehaviour
     public GameObject[] waypoints;
 
     public float maximumDistance;
+    public float distance;
 
     public LayerMask WallLayer;
 
@@ -24,46 +25,46 @@ public class WaypointLocator : MonoBehaviour
 
     public void rayCasts()
     {
-        Debug.DrawRay(transform.position, Vector3.forward * maximumDistance, Color.red);
-        Debug.DrawRay(transform.position + Vector3.forward * maximumDistance, Vector3.down * 5f, Color.red);
-        Debug.DrawRay(transform.position, Vector3.right * maximumDistance, Color.red);
-        Debug.DrawRay(transform.position + Vector3.right * maximumDistance, Vector3.down * 5f, Color.red);
-        Debug.DrawRay(transform.position, Vector3.left * maximumDistance, Color.red);
-        Debug.DrawRay(transform.position + Vector3.left * maximumDistance, Vector3.down * 5f, Color.red);
-        Debug.DrawRay(transform.position, Vector3.back * maximumDistance, Color.red);
-        Debug.DrawRay(transform.position + Vector3.back * maximumDistance, Vector3.down * 5f, Color.red);
-        if (Physics.Raycast(transform.position, Vector3.forward, out RaycastHit _hit, maximumDistance))
+
+        Debug.DrawRay(transform.position + Vector3.back * maximumDistance /2, Vector3.down, Color.red);
+
+        Debug.DrawRay(transform.position + Vector3.right * maximumDistance, Vector3.down, Color.red);
+
+        Debug.DrawRay(transform.position + Vector3.left * maximumDistance, Vector3.down, Color.red);
+
+        Debug.DrawRay(transform.position + Vector3.back * maximumDistance, Vector3.down, Color.red);
+
+
+        if (Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, maximumDistance))
         {
 
         }
-        else if (Physics.Raycast(transform.position + Vector3.forward * maximumDistance, Vector3.down, out _hit, 5f)) 
+        if (Physics.Raycast(transform.position, Vector3.right, out RaycastHit hit2, maximumDistance))
+        {
+
+        }
+        if (Physics.Raycast(transform.position, Vector3.left, out RaycastHit hit3, maximumDistance))
+        {
+
+        }
+        if (Physics.Raycast(transform.position, Vector3.back, out RaycastHit hit4, maximumDistance))
+        {
+
+        }
+
+        if (Physics.Raycast(hit.point + Vector3.back * distance, Vector3.down, out RaycastHit _hit)) 
         {
             waypoints[0].transform.position = _hit.point;
         }
-
-        if (Physics.Raycast(transform.position, Vector3.right, out RaycastHit _hit2, maximumDistance))
-        {
-
-        }
-        else if (Physics.Raycast(transform.position + Vector3.right * maximumDistance, Vector3.down, out _hit2, 5f))
+        if (Physics.Raycast(hit2.point + Vector3.left * distance, Vector3.down, out RaycastHit _hit2))
         {
             waypoints[1].transform.position = _hit2.point;
         }
-
-        if (Physics.Raycast(transform.position, Vector3.left, out RaycastHit _hit3, maximumDistance))
-        {
-
-        }
-        else if (Physics.Raycast(transform.position + Vector3.left * maximumDistance, Vector3.down, out _hit3, 5f))
+        if (Physics.Raycast(hit3.point + Vector3.right * distance, Vector3.down, out RaycastHit _hit3)) 
         {
             waypoints[2].transform.position = _hit3.point;
         }
-
-        if (Physics.Raycast(transform.position, Vector3.back, out RaycastHit _hit4, maximumDistance))
-        {
-
-        }
-        else if (Physics.Raycast(transform.position + Vector3.back * maximumDistance, Vector3.down, out _hit4, 5f))
+        if (Physics.Raycast(hit4.point + Vector3.forward * distance, Vector3.down, out RaycastHit _hit4))
         {
             waypoints[3].transform.position = _hit4.point;
         }

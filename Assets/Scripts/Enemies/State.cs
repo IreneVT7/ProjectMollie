@@ -107,7 +107,6 @@ public class State
         {
             HannahStateManager.instance.RoomDetection();
             HannahStateManager.instance.DetectCharacter();
-            HannahStateManager.instance.DetectCharacterAudio();
 
             HannahStateManager.instance.rooms = GameObject.FindGameObjectsWithTag("Room");
             HannahStateManager.instance.waypoints = GameObject.FindGameObjectsWithTag("WayPoints");
@@ -194,7 +193,6 @@ public class State
             if (HannahStateManager.instance.detected)
             {
                 HannahStateManager.instance.DetectCharacter();
-                HannahStateManager.instance.DetectCharacterAudio();
                 HannahStateManager.instance.Chase();
                 if (HannahStateManager.instance.target == null)
                 {
@@ -203,7 +201,7 @@ public class State
                 }
 
             }
-            else if(HannahStateManager.instance.target == null && BasicCharacterStateMachine.instance.hiding == true)
+            else if(HannahStateManager.instance.target == null)
             {
                 nextState = new Patrol();
                 stage = EVENTS.EXIT;
@@ -240,7 +238,7 @@ public class State
         public override void Update()
         {
             HannahStateManager.instance.DetectCharacter();
-            HannahStateManager.instance.DetectCharacterAudio();
+            //HannahStateManager.instance.DetectCharacterAudio();
             HannahStateManager.instance.agent.velocity = Vector3.zero;
             if (HannahStateManager.instance.timeToAttack > 0f)
             {
