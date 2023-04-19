@@ -13,6 +13,7 @@ public class HannahStateManager : MonoBehaviour
     public float maxTime;
     public float attackRange;
     public float rotationSpeed;
+    public bool detected;
 
     public static HannahStateManager instance;
     public Animator anim;
@@ -98,6 +99,7 @@ public class HannahStateManager : MonoBehaviour
             {
                 target = _targets[0].transform;
             }
+            
             //Dibujamos el rayo que comprueba si esta tras un obstaculo
             //Sumamos un offset al origen en el eje Y para que no lance el rayo desde los pies
             Debug.DrawRay(rayOrigin.position, _targetDir, Color.magenta);
@@ -115,9 +117,8 @@ public class HannahStateManager : MonoBehaviour
         Collider[] _targets = Physics.OverlapSphere(transform.position, visionRange, targetLayer);
         if (_targets.Length > 0)
         {
-            Debug.Log("SE HA DETECTADO " + _targets.Length + " ENEMIGO");
             Vector3 _targetDir = _targets[0].transform.position - rayOrigin.position;
-            if (BasicCharacterStateMachine.instance.moveSpeed <= 4f)
+            if (BasicCharacterStateMachine.instance.moveSpeed >= 4f)
             {
                 //Lanzamos un rayo desde el enemigo hacia el jugador para comprobar si esta
                 //escondido detras de alguna pared u obstaculo
@@ -211,7 +212,7 @@ public class HannahStateManager : MonoBehaviour
     public float GetDistanceToTarget()
     {
         //Calculamos la direccion con respecto al target y devolvemos la distancia hacia el
-        Vector3 _direction = target.position - transform.position;
+        Vector3 _direction = BasicCharacterStateMachine.instance.transform.position - transform.position;
         return _direction.sqrMagnitude;
     }
 
