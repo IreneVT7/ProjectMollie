@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [HideInInspector] public bool hasKey;
-    [HideInInspector] public bool hasBiberon;
-    [HideInInspector] public bool hasTrain;
+    [HideInInspector] public bool hasKey = false;
+    [HideInInspector] public bool hasBiberon = false;
+    [HideInInspector] public bool hasTrain = false;
+    [HideInInspector] public bool biberonGiven = false;
+    [HideInInspector] public bool trainGiven = false;
+    public GameObject key;
 
 
     public static GameManager instance;
@@ -25,7 +28,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        key.SetActive(false);
     }
 
     // Update is called once per frame
@@ -38,6 +41,12 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log(text);
     }
+
+    public void ShowKey()
+    {
+        key.SetActive(true);
+    }
+
 
 
 }

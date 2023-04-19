@@ -8,32 +8,44 @@ public class DialogueUI : MonoBehaviour
     public GameObject dialogueBox;
     public TMP_Text textLabel;
     public TypewritterEffect TypewritterEffect;
-    [SerializeField] private DialogueObject testDialogue;
+    public DialogueObject[] dialogues;
+    private BasicCharacterStateMachine BasicCharacterStateMachine;
+
+    public static DialogueUI instance;
+    private void Awake()
+    {
+        if (!instance)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        ShowDialogue(testDialogue);
+        BasicCharacterStateMachine = FindObjectOfType<BasicCharacterStateMachine>();
+        OpenAndCloseDialogueBox(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ShowDialogue(int num)
     {
-
-    }
-
-    public void ShowDialogue(DialogueObject dialogueObject)
-    {
-        StartCoroutine(StepThroughDialogue(dialogueObject));
+        StartCoroutine(StepThroughDialogue(dialogues[num]));
     }
 
     private IEnumerator StepThroughDialogue(DialogueObject dialogueObject)
     {
+        OpenAndCloseDialogueBox(true);
+        BasicCharacterStateMachine.enabled = false;
         foreach (string dialogue in dialogueObject.Dialogue)
         {
             yield return TypewritterEffect.Run(dialogue, textLabel);
             yield return new WaitUntil(() => Input.GetButtonDown("Fire1"));
         }
+        BasicCharacterStateMachine.enabled = true;
         OpenAndCloseDialogueBox(false);
     }
 
