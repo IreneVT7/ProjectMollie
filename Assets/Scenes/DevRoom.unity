@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 1478.8593, g: 1831.9368, b: 2425.4312, a: 1}
+  m_IndirectSpecularColor: {r: 1478.8739, g: 1831.6617, b: 2424.8467, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -205,7 +205,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh22522
+  m_Name: pb_Mesh22650
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -374,13 +374,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c18d00a766185ad47ab1731631453f95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &854889573 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 795727953706606964, guid: bf967eeb278440144ac82be27c7808ef, type: 3}
+  m_PrefabInstance: {fileID: 795727954182348160}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1005480211
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh22656
+  m_Name: pb_Mesh22732
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1365,7 +1370,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh22538
+  m_Name: pb_Mesh-1330
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1740,7 +1745,12 @@ MonoBehaviour:
   dialogueBox: {fileID: 179660332}
   textLabel: {fileID: 1132855726}
   TypewritterEffect: {fileID: 1718001757}
-  testDialogue: {fileID: 11400000, guid: fbc6c4b58214dd2408ec14d2906833c6, type: 2}
+  dialogues:
+  - {fileID: 11400000, guid: fbc6c4b58214dd2408ec14d2906833c6, type: 2}
+  - {fileID: 11400000, guid: bbaa54db61227d9479df29920d9867e8, type: 2}
+  - {fileID: 11400000, guid: 4f116304185c375429c4257b03537865, type: 2}
+  - {fileID: 11400000, guid: 98f2408350d495a4b81c6ecdb3fed762, type: 2}
+  - {fileID: 11400000, guid: e11e400633f0a0e40be215e8bc7b8cab, type: 2}
 --- !u!1 &1826619892
 GameObject:
   m_ObjectHideFlags: 0
@@ -2084,7 +2094,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1224
+  m_Name: pb_Mesh-1444
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2253,7 +2263,7 @@ GameObject:
   - component: {fileID: 1927319812}
   - component: {fileID: 1927319811}
   m_Layer: 0
-  m_Name: Gamemanager
+  m_Name: Game Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2274,6 +2284,9 @@ MonoBehaviour:
   hasKey: 0
   hasBiberon: 0
   hasTrain: 0
+  biberonGiven: 0
+  trainGiven: 0
+  key: {fileID: 854889573}
 --- !u!4 &1927319812
 Transform:
   m_ObjectHideFlags: 0
@@ -2510,7 +2523,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh22612
+  m_Name: pb_Mesh22702
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

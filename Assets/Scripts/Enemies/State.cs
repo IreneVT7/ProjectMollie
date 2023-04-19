@@ -91,9 +91,10 @@ public class State
         }
 
         public override void Start()
-        {            
+        {
+            HannahStateManager.instance.detected = false;
             HannahStateManager.instance.rooms = GameObject.FindGameObjectsWithTag("Room");
-            HannahStateManager.instance.centrePoint.position = HannahStateManager.instance.rooms[HannahStateManager.instance.randomRoom].transform.position + new Vector3(0, 1, 0);
+            Vector3 vector3 = HannahStateManager.instance.centrePoint.position = HannahStateManager.instance.rooms[HannahStateManager.instance.randomRoom].transform.position + new Vector3(0, 1, 0);
             Debug.Log("Patrol");
             if (HannahStateManager.instance.agent.remainingDistance <= .1f)
             {
@@ -139,6 +140,7 @@ public class State
 
         public override void Start()
         {
+            HannahStateManager.instance.detected = false;
             HannahStateManager.instance.waypoints = GameObject.FindGameObjectsWithTag("WayPoints");
             Debug.Log("Room Patrol");
             counter = 20f;
@@ -182,12 +184,14 @@ public class State
 
         public override void Start()
         {
+            HannahStateManager.instance.detected = true;
+            Debug.Log("Chase");
             HannahStateManager.instance.anim.SetTrigger("isChasing");
             base.Start();
         }
         public override void Update()
         {
-            if (BasicCharacterStateMachine.instance.hiding == false)
+            if (HannahStateManager.instance.detected)
             {
                 HannahStateManager.instance.DetectCharacter();
                 HannahStateManager.instance.DetectCharacterAudio();
@@ -197,8 +201,9 @@ public class State
                     nextState = new Patrol();
                     stage = EVENTS.EXIT;
                 }
+
             }
-            else if(HannahStateManager.instance.target == null)
+            else if(HannahStateManager.instance.target == null && BasicCharacterStateMachine.instance.hiding == true)
             {
                 nextState = new Patrol();
                 stage = EVENTS.EXIT;
@@ -227,6 +232,7 @@ public class State
         }
         public override void Start()
         {
+            Debug.Log("Attack");
             HannahStateManager.instance.timeToAttack = HannahStateManager.instance.maxTime;
             HannahStateManager.instance.anim.SetTrigger("isAttacking");
             base.Start();
