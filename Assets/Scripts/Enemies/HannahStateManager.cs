@@ -90,6 +90,7 @@ public class HannahStateManager : MonoBehaviour
             if (Vector3.Angle(transform.forward, _targetDir) > visionAngle / 2f)
             {
                 target = null;
+                detected = false;
             }
             //Lanzamos un rayo desde el enemigo hacia el jugador para comprobar si esta
             //escondido detras de alguna pared u obstaculo
