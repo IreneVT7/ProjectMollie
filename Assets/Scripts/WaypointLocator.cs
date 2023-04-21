@@ -35,36 +35,36 @@ public class WaypointLocator : MonoBehaviour
         Debug.DrawRay(transform.position + Vector3.back * maximumDistance, Vector3.down, Color.red);
 
 
-        if (Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, maximumDistance))
+        if (Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, maximumDistance, WallLayer))
         {
 
         }
-        if (Physics.Raycast(transform.position, Vector3.right, out RaycastHit hit2, maximumDistance))
+        if (Physics.Raycast(transform.position, Vector3.right, out RaycastHit hit2, maximumDistance, WallLayer))
         {
 
         }
-        if (Physics.Raycast(transform.position, Vector3.left, out RaycastHit hit3, maximumDistance))
+        if (Physics.Raycast(transform.position, Vector3.left, out RaycastHit hit3, maximumDistance, WallLayer))
         {
 
         }
-        if (Physics.Raycast(transform.position, Vector3.back, out RaycastHit hit4, maximumDistance))
+        if (Physics.Raycast(transform.position, Vector3.back, out RaycastHit hit4, maximumDistance, WallLayer))
         {
 
         }
 
-        if (Physics.Raycast(hit.point + Vector3.back * distance, Vector3.down, out RaycastHit _hit)) 
+        if (Physics.Raycast(hit.point + Vector3.back * distance, Vector3.down, out RaycastHit _hit, WallLayer)) 
         {
             waypoints[0].transform.position = _hit.point;
         }
-        if (Physics.Raycast(hit2.point + Vector3.left * distance, Vector3.down, out RaycastHit _hit2))
+        if (Physics.Raycast(hit2.point + Vector3.left * distance, Vector3.down, out RaycastHit _hit2, WallLayer))
         {
             waypoints[1].transform.position = _hit2.point;
         }
-        if (Physics.Raycast(hit3.point + Vector3.right * distance, Vector3.down, out RaycastHit _hit3)) 
+        if (Physics.Raycast(hit3.point + Vector3.right * distance, Vector3.down, out RaycastHit _hit3, WallLayer)) 
         {
             waypoints[2].transform.position = _hit3.point;
         }
-        if (Physics.Raycast(hit4.point + Vector3.forward * distance, Vector3.down, out RaycastHit _hit4))
+        if (Physics.Raycast(hit4.point + Vector3.forward * distance, Vector3.down, out RaycastHit _hit4, WallLayer))
         {
             waypoints[3].transform.position = _hit4.point;
         }
