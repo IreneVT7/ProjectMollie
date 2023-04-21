@@ -63,7 +63,6 @@ public class State
         public override void Update()
         {
             HannahStateManager.instance.DetectCharacter();
-            HannahStateManager.instance.DetectCharacterAudio();
             if (HannahStateManager.instance.target != null)
             {
                 nextState = new Chase();

@@ -99,18 +99,18 @@ public class HannahStateManager : MonoBehaviour
             {
                 target = _targets[0].transform;
             }
-            if (BasicCharacterStateMachine.instance.moveSpeed >= 4f)
-            {
-                //Lanzamos un rayo desde el enemigo hacia el jugador para comprobar si esta
-                //escondido detras de alguna pared u obstaculo
-                //Sumamos un Offset al origen en el eje Y para que no lance el rayo desde los pies
-                if (Physics.Raycast(rayOrigin.position, _targetDir.normalized,
-                    _targetDir.magnitude, obstacleLayer) == false)
-                {
-                    target = _targets[0].transform;
-                }
+            //if (!BasicCharacterStateMachine.instance.sneaking)
+            //{
+            //    //Lanzamos un rayo desde el enemigo hacia el jugador para comprobar si esta
+            //    //escondido detras de alguna pared u obstaculo
+            //    //Sumamos un Offset al origen en el eje Y para que no lance el rayo desde los pies
+            //    if (Physics.Raycast(rayOrigin.position, _targetDir.normalized,
+            //        _targetDir.magnitude, obstacleLayer) == false)
+            //    {
+            //        target = _targets[0].transform;
+            //    }
 
-            }
+            //}
             //Dibujamos el rayo que comprueba si esta tras un obstaculo
             //Sumamos un offset al origen en el eje Y para que no lance el rayo desde los pies
             Debug.DrawRay(rayOrigin.position, _targetDir, Color.magenta);
@@ -121,32 +121,6 @@ public class HannahStateManager : MonoBehaviour
             StartCoroutine(stopChasing());
         }
     }
-
-    public void DetectCharacterAudio()
-    {
-        //Guardamos los objetos encontrados en el array con overlapsphere
-        Collider[] _targets = Physics.OverlapSphere(transform.position, visionRange, targetLayer);
-        if (_targets.Length > 0)
-        {
-            Vector3 _targetDir = _targets[0].transform.position - rayOrigin.position;
-            if (BasicCharacterStateMachine.instance.moveSpeed >= 4f)
-            {
-                //Lanzamos un rayo desde el enemigo hacia el jugador para comprobar si esta
-                //escondido detras de alguna pared u obstaculo
-                //Sumamos un Offset al origen en el eje Y para que no lance el rayo desde los pies
-                if (Physics.Raycast(rayOrigin.position, _targetDir.normalized,
-                    _targetDir.magnitude, obstacleLayer) == false)
-                {
-                    target = _targets[0].transform;
-                }
-
-            }
-            //Dibujamos el rayo que comprueba si esta tras un obstaculo
-            //Sumamos un offset al origen en el eje Y para que no lance el rayo desde los pies
-            Debug.DrawRay(rayOrigin.position, _targetDir, Color.blue);
-        }
-    }
-
     public void RoomDetection()
     {
         //Escoge una localizacion dentro del array
@@ -174,16 +148,24 @@ public class HannahStateManager : MonoBehaviour
 
     public void RoomPatrol()
     {
+        bool arrived;
         maxRoomWP = waypoints.Length;
-        if (agent.remainingDistance <= .1f)
+        if (agent.remainingDistance <= 1f)
         {
-            StartCoroutine(RoomPatrolDelay());           
+            arrived = true;
+            if (arrived)
+            {
+                StartCoroutine(RoomPatrolDelay());
+                arrived = false;
+            }
+                     
         }
     }
     #endregion
 
     public void Chase()
     {
+      
         if (target != null)
         {
             agent.SetDestination(target.position);

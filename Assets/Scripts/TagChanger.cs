@@ -5,6 +5,8 @@ using UnityEngine;
 public class TagChanger : MonoBehaviour
 {
     public Transform Player;
+    public Transform centrePos;
+    [SerializeField] private SphereCollider collider;
 
     void Start()
     {
@@ -14,7 +16,16 @@ public class TagChanger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = Player.position;
+        if (!BasicCharacterStateMachine.instance.hiding)
+        {
+            transform.position = Player.position;
+            collider.radius = 30;
+        }
+        else
+        {
+            StartCoroutine(CurrentRoom());  
+        }
+        
     }
 
     private void OnTriggerEnter(Collider other)
@@ -33,4 +44,11 @@ public class TagChanger : MonoBehaviour
         }
     }
 
+    IEnumerator CurrentRoom()
+    {
+        transform.position = centrePos.position;
+        collider.radius = 10;
+        yield return new WaitForSeconds(5f);
+        collider.radius = 50;
+    }
 }
