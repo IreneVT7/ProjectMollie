@@ -203,7 +203,7 @@ public class BasicCharacterStateMachine : MonoBehaviour
                 }
                 else
                 {
-                    transform.localScale = new Vector3(transform.localScale.x, 1f, transform.localScale.z);
+                    transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z);
                 }
                 StartCoroutine(LeanIn());
                 if (!HannahStateManager.instance.detected)
@@ -215,7 +215,7 @@ public class BasicCharacterStateMachine : MonoBehaviour
             }
             else
             {
-                transform.localScale = new Vector3(transform.localScale.x, 1f, transform.localScale.z);
+                transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z);
                 // transform.position = lastPosition;
                 LeanTween.move(this.gameObject, lastPosition, 0.5f).setEase(LeanTweenType.easeOutCirc);
                 coll.enabled = true;
