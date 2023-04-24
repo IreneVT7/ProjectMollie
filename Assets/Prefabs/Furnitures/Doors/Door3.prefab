@@ -125,6 +125,7 @@ GameObject:
   - component: {fileID: 638635442429719162}
   - component: {fileID: 4692897683643795117}
   - component: {fileID: 2880268227306397334}
+  - component: {fileID: 3463345946685884204}
   m_Layer: 0
   m_Name: PuertaCristalRedondo (1)
   m_TagString: Untagged
@@ -195,6 +196,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &3463345946685884204
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5576120742280541672}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7680333614837956326, guid: d0ae5f026122f4f428a8a710b262a8c2, type: 3}
 --- !u!1 &8885973437747607458
 GameObject:
   m_ObjectHideFlags: 0
@@ -206,6 +221,7 @@ GameObject:
   - component: {fileID: 4308942490813015102}
   - component: {fileID: 3376578386066103681}
   - component: {fileID: 7680431661535160597}
+  - component: {fileID: 1074294076551073854}
   m_Layer: 0
   m_Name: PuertaCristalRedondo
   m_TagString: Untagged
@@ -276,3 +292,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &1074294076551073854
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8885973437747607458}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7680333614837956326, guid: d0ae5f026122f4f428a8a710b262a8c2, type: 3}
