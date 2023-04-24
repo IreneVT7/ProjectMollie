@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 499203615758365586}
   - component: {fileID: 7633556538732428171}
   - component: {fileID: 5086924753835647056}
+  - component: {fileID: 1753581195}
   m_Layer: 0
   m_Name: MarcoGrande
   m_TagString: Untagged
@@ -81,6 +82,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!54 &1753581195
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1766857440203331617}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &4439804878717617740
 GameObject:
   m_ObjectHideFlags: 0
@@ -104,7 +121,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4439804878717617740}
-  m_LocalRotation: {x: -0, y: -0.7071064, z: -0, w: 0.7071072}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -18.500002, y: 3.24, z: -40.050003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -125,7 +142,9 @@ GameObject:
   - component: {fileID: 638635442429719162}
   - component: {fileID: 4692897683643795117}
   - component: {fileID: 2880268227306397334}
-  - component: {fileID: 3463345946685884204}
+  - component: {fileID: 312370302352696034}
+  - component: {fileID: 1614787715}
+  - component: {fileID: 1614787714}
   m_Layer: 0
   m_Name: PuertaCristalRedondo (1)
   m_TagString: Untagged
@@ -140,9 +159,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5576120742280541672}
-  m_LocalRotation: {x: -0.0000004172325, y: 0.7071068, z: 0.7071068, w: 0.0000004172325}
-  m_LocalPosition: {x: -3.2849944, y: -0.2832646, z: -0.0000070930273}
-  m_LocalScale: {x: 1, y: 0.255068, z: 1}
+  m_LocalRotation: {x: -0.0000009536743, y: 0.7071068, z: 0.7071068, w: 0.0000008046627}
+  m_LocalPosition: {x: -3.2849944, y: -0.266, z: -0.0000070930273}
+  m_LocalScale: {x: 1, y: 0.255068, z: 0.9821}
   m_Children: []
   m_Father: {fileID: 3951499306912111862}
   m_RootOrder: 2
@@ -196,8 +215,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &3463345946685884204
-MeshCollider:
+--- !u!65 &312370302352696034
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -206,10 +225,61 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -7680333614837956326, guid: d0ae5f026122f4f428a8a710b262a8c2, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 3.4972284, y: 1.0000039, z: 4.000001}
+  m_Center: {x: -1.5336198, y: -0.000007626599, z: 0.00000002499754}
+--- !u!54 &1614787715
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5576120742280541672}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!59 &1614787714
+HingeJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5576120742280541672}
+  m_ConnectedBody: {fileID: 0}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0.2, y: 0, z: 0}
+  m_Axis: {x: 1, y: 0, z: 90}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: -18.499998, y: 2.974, z: -43.534996}
+  m_UseSpring: 0
+  m_Spring:
+    spring: 0
+    damper: 0
+    targetPosition: 0
+  m_UseMotor: 0
+  m_Motor:
+    targetVelocity: 0
+    force: 0
+    freeSpin: 0
+  m_UseLimits: 1
+  m_Limits:
+    min: -70
+    max: 70
+    bounciness: 0.5
+    bounceMinVelocity: 0.2
+    contactDistance: 0
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 1
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
 --- !u!1 &8885973437747607458
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,7 +291,9 @@ GameObject:
   - component: {fileID: 4308942490813015102}
   - component: {fileID: 3376578386066103681}
   - component: {fileID: 7680431661535160597}
-  - component: {fileID: 1074294076551073854}
+  - component: {fileID: 947834360}
+  - component: {fileID: 947834356}
+  - component: {fileID: 947834359}
   m_Layer: 0
   m_Name: PuertaCristalRedondo
   m_TagString: Untagged
@@ -236,13 +308,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8885973437747607458}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 3.2850053, y: -0.2832646, z: 0.000000076293944}
-  m_LocalScale: {x: 1, y: 0.255068, z: 1}
+  m_LocalRotation: {x: -0.7063535, y: 0, z: 0, w: 0.7078593}
+  m_LocalPosition: {x: 3.2850053, y: -0.26599997, z: 0.000000076293944}
+  m_LocalScale: {x: 1, y: 0.255068, z: 0.9821}
   m_Children: []
   m_Father: {fileID: 3951499306912111862}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.878, y: 0, z: 0}
 --- !u!33 &3376578386066103681
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -292,8 +364,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1074294076551073854
-MeshCollider:
+--- !u!54 &947834360
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8885973437747607458}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &947834356
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -302,7 +390,42 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -7680333614837956326, guid: d0ae5f026122f4f428a8a710b262a8c2, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 3.475324, y: 1.0000002, z: 4.000001}
+  m_Center: {x: -1.5226678, y: 0.000000010595418, z: -0.00000024276403}
+--- !u!59 &947834359
+HingeJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8885973437747607458}
+  m_ConnectedBody: {fileID: 0}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0.2, y: 0, z: 0}
+  m_Axis: {x: 1, y: 0, z: 90}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: -18.499998, y: 2.974, z: -36.565}
+  m_UseSpring: 0
+  m_Spring:
+    spring: 0
+    damper: 0
+    targetPosition: 0
+  m_UseMotor: 0
+  m_Motor:
+    targetVelocity: 0
+    force: 0
+    freeSpin: 0
+  m_UseLimits: 1
+  m_Limits:
+    min: -70
+    max: 70
+    bounciness: 1
+    bounceMinVelocity: 0.2
+    contactDistance: 0
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 1
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
