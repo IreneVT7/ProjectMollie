@@ -8,7 +8,7 @@ public class State
 {
     public enum STATES
     {
-        IDLE, PATROL, ROOMPATROL, CHASE, ATTACK
+        IDLE, PATROL, ROOMPATROL, CHASE, ATTACK, PUKECHASE
     }
 
     public enum EVENTS
@@ -120,6 +120,12 @@ public class State
                 nextState = new Chase();
                 stage = EVENTS.EXIT;
             }
+
+            if (PukeBehavior.instance.detected)
+            {
+                nextState = new PukeChase();
+                stage = EVENTS.EXIT;
+            }
         }
 
         public override void Exit()
@@ -163,6 +169,12 @@ public class State
             if (counter <= .1f)
             {
                 nextState = new IdleHannah();
+                stage = EVENTS.EXIT;
+            }
+
+            if (PukeBehavior.instance.detected)
+            {
+                nextState = new PukeChase();
                 stage = EVENTS.EXIT;
             }
         }
@@ -254,6 +266,31 @@ public class State
                 nextState = new Chase();
                 stage = EVENTS.EXIT;
             }
+        }
+
+        public override void Exit()
+        {
+            base.Exit();
+        }
+    }
+
+    public class PukeChase : State
+    {
+        public PukeChase() : base()
+        {
+            HannahStateManager.instance.target = BasicCharacterStateMachine.instance.gameObject.transform;
+            name = STATES.PUKECHASE;
+        }
+
+        public override void Start()
+        {
+            base.Start();
+        }
+
+        public override void Update()
+        {
+            Debug.Log("PukeChase");
+            HannahStateManager.instance.Chase();
         }
 
         public override void Exit()
