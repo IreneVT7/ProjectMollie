@@ -39,7 +39,6 @@ public class HannahStateManager : MonoBehaviour
     public Transform centrePoint;
     public float range;
     public int randomRoom;
-    public bool isInsideRoom;
     #endregion
 
 
@@ -62,7 +61,6 @@ public class HannahStateManager : MonoBehaviour
         agent.autoBraking = false;
         agent.velocity = Vector3.zero;
         
-        isInsideRoom = false;
         agent.speed = speed;
     }
     private void Update()
@@ -149,17 +147,19 @@ public class HannahStateManager : MonoBehaviour
 
     public void RoomPatrol()
     {
-        bool arrived;
         maxRoomWP = waypoints.Length;
-        if (agent.remainingDistance <= 1f)
+        if (agent.remainingDistance >= .1f)
         {
-            arrived = true;
-            if (arrived)
+            agent.SetDestination(waypoints[roomWayPoints].transform.position);
+            return;
+        }
+        else if (agent.remainingDistance <= .1f)
+        {
+            roomWayPoints++;
+            if (roomWayPoints == maxRoomWP)
             {
-                StartCoroutine(RoomPatrolDelay());
-                arrived = false;
+                roomWayPoints = 0;
             }
-                     
         }
     }
     #endregion
@@ -194,13 +194,8 @@ public class HannahStateManager : MonoBehaviour
     }
     IEnumerator RoomPatrolDelay()
     {
-        yield return new WaitForSeconds(.1f);
-        agent.SetDestination(waypoints[roomWayPoints].transform.position);
-        roomWayPoints += 1;
-        if (roomWayPoints == maxRoomWP)
-        {
-            roomWayPoints = 0;
-        }
+        yield return new WaitForSeconds(1f);
+        agent.SetDestination(waypoints[roomWayPoints].transform.position);        
     }
 
     public float GetDistanceToTarget()

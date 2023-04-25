@@ -6,6 +6,8 @@ public class TagChanger : MonoBehaviour
 {
     public Transform Player;
     public Transform centrePos;
+    float radius = 10f;
+    bool onCurrentRoom;
     [SerializeField] private SphereCollider collider;
 
     void Start()
@@ -20,9 +22,12 @@ public class TagChanger : MonoBehaviour
         {
             transform.position = Player.position;
             collider.radius = 30;
+            radius = 10f;
         }
         else
         {
+            transform.position = centrePos.position;
+            collider.radius = radius;
             StartCoroutine(CurrentRoom());  
         }
         
@@ -46,9 +51,8 @@ public class TagChanger : MonoBehaviour
 
     IEnumerator CurrentRoom()
     {
-        transform.position = centrePos.position;
-        collider.radius = 10;
+        
         yield return new WaitForSeconds(5f);
-        collider.radius = 50;
+        radius = 30;
     }
 }
