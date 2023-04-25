@@ -11,6 +11,30 @@ public class WaypointLocator : MonoBehaviour
 
     public LayerMask WallLayer;
 
+    public Vector3 FirstWayPoint;
+    public Vector3 SecondWayPoint;
+    public Vector3 ThirdWayPoint;
+    public Vector3 FourthWayPoint;
+
+    RaycastHit hit;
+    RaycastHit hit2;
+    RaycastHit hit3;
+    RaycastHit hit4;
+
+    public static WaypointLocator instance;
+
+
+    private void Awake()
+    {
+        if (!instance)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -25,46 +49,45 @@ public class WaypointLocator : MonoBehaviour
 
     public void rayCasts()
     {
+        
+        Debug.DrawRay(transform.position, FirstWayPoint, Color.red);
+        Debug.DrawRay(transform.position, SecondWayPoint, Color.red);
+        Debug.DrawRay(transform.position, ThirdWayPoint, Color.red);
+        Debug.DrawRay(transform.position, FourthWayPoint, Color.red);
 
-        Debug.DrawRay(transform.position + Vector3.back * maximumDistance /2, Vector3.down, Color.red);
-
-        Debug.DrawRay(transform.position + Vector3.right * maximumDistance, Vector3.down, Color.red);
-
-        Debug.DrawRay(transform.position + Vector3.left * maximumDistance, Vector3.down, Color.red);
-
-        Debug.DrawRay(transform.position + Vector3.back * maximumDistance, Vector3.down, Color.red);
-
-
-        if (Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, maximumDistance, WallLayer))
+        if (Physics.Raycast(transform.position, FirstWayPoint, out hit, maximumDistance, WallLayer))
         {
 
         }
-        if (Physics.Raycast(transform.position, Vector3.right, out RaycastHit hit2, maximumDistance, WallLayer))
+        if (Physics.Raycast(transform.position, SecondWayPoint, out hit2, maximumDistance, WallLayer))
         {
 
         }
-        if (Physics.Raycast(transform.position, Vector3.left, out RaycastHit hit3, maximumDistance, WallLayer))
+        if (Physics.Raycast(transform.position, ThirdWayPoint, out hit3, maximumDistance, WallLayer))
         {
 
         }
-        if (Physics.Raycast(transform.position, Vector3.back, out RaycastHit hit4, maximumDistance, WallLayer))
+        if (Physics.Raycast(transform.position, FourthWayPoint, out hit4, maximumDistance, WallLayer))
         {
 
         }
-
-        if (Physics.Raycast(hit.point + Vector3.back * distance, Vector3.down, out RaycastHit _hit, WallLayer)) 
+        //Vector3 centreDir1 = hit.point -= transform.position;
+        //Vector3 centreDir2 = hit2.point -= transform.position;
+        //Vector3 centreDir3 = hit3.point -= transform.position;
+        //Vector3 centreDir4 = hit4.point -= transform.position;
+        if (Physics.Raycast(hit.point + -FirstWayPoint * distance, Vector3.down, out RaycastHit _hit, WallLayer)) 
         {
             waypoints[0].transform.position = _hit.point;
         }
-        if (Physics.Raycast(hit2.point + Vector3.left * distance, Vector3.down, out RaycastHit _hit2, WallLayer))
+        if (Physics.Raycast(hit2.point + -SecondWayPoint * distance, Vector3.down, out RaycastHit _hit2, WallLayer))
         {
             waypoints[1].transform.position = _hit2.point;
         }
-        if (Physics.Raycast(hit3.point + Vector3.right * distance, Vector3.down, out RaycastHit _hit3, WallLayer)) 
+        if (Physics.Raycast(hit3.point + -ThirdWayPoint * distance, Vector3.down, out RaycastHit _hit3, WallLayer)) 
         {
             waypoints[2].transform.position = _hit3.point;
         }
-        if (Physics.Raycast(hit4.point + Vector3.forward * distance, Vector3.down, out RaycastHit _hit4, WallLayer))
+        if (Physics.Raycast(hit4.point + -FourthWayPoint * distance, Vector3.down, out RaycastHit _hit4, WallLayer))
         {
             waypoints[3].transform.position = _hit4.point;
         }

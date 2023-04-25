@@ -8,7 +8,7 @@ public class State
 {
     public enum STATES
     {
-        IDLE, PATROL, ROOMPATROL, CHASE, ATTACK
+        IDLE, PATROL, ROOMPATROL, CHASE, ATTACK, PUKECHASE
     }
 
     public enum EVENTS
@@ -81,7 +81,6 @@ public class State
             base.Exit();
         }
     }
-
     public class Patrol : State
     {
         public Patrol() : base()
@@ -120,6 +119,12 @@ public class State
                 nextState = new Chase();
                 stage = EVENTS.EXIT;
             }
+
+            if (PukeBehavior.instance.detected)
+            {
+                nextState = new Chase();
+                stage = EVENTS.EXIT;
+            }
         }
 
         public override void Exit()
@@ -128,7 +133,6 @@ public class State
             base.Exit();
         }
     }
-
     public class RoomPatrol : State
     {
         public RoomPatrol() : base()
@@ -139,6 +143,10 @@ public class State
         public override void Start()
         {
             HannahStateManager.instance.detected = false;
+            WaypointLocator.instance.FirstWayPoint = new Vector3(Random.Range(-1, 1), 0, 1);
+            WaypointLocator.instance.SecondWayPoint = new Vector3(Random.Range(1, -1), 0, -1);
+            WaypointLocator.instance.ThirdWayPoint = new Vector3(1, 0, Random.Range(1, -1));
+            WaypointLocator.instance.FourthWayPoint = new Vector3(-1, 0, Random.Range(1, -1));
             HannahStateManager.instance.waypoints = GameObject.FindGameObjectsWithTag("WayPoints");
             Debug.Log("Room Patrol");
             counter = 20f;
@@ -165,6 +173,12 @@ public class State
                 nextState = new IdleHannah();
                 stage = EVENTS.EXIT;
             }
+
+            if (PukeBehavior.instance.detected)
+            {
+                nextState = new Chase();
+                stage = EVENTS.EXIT;
+            }
         }
 
         public override void Exit()
@@ -172,7 +186,6 @@ public class State
             base.Exit();
         }
     }
-
     public class Chase : State
     {
         public Chase() : base()
@@ -191,7 +204,10 @@ public class State
         {
             if (HannahStateManager.instance.detected)
             {
-                HannahStateManager.instance.DetectCharacter();
+                if (!PukeBehavior.instance.detected)
+                {
+                    HannahStateManager.instance.DetectCharacter();
+                }                
                 HannahStateManager.instance.Chase();
                 if (HannahStateManager.instance.target == null)
                 {
@@ -220,7 +236,6 @@ public class State
             base.Exit();
         }
     }
-
     public class Attack : State
     {
         public Attack(): base()
@@ -261,4 +276,5 @@ public class State
             base.Exit();
         }
     }
+
 }
