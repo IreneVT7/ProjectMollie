@@ -65,7 +65,6 @@ public class HannahStateManager : MonoBehaviour
     }
     private void Update()
     {
-        
         currentState = currentState.Process();
     }
     public void Idle()
@@ -99,18 +98,18 @@ public class HannahStateManager : MonoBehaviour
             {
                 target = _targets[0].transform;
             }
-            if (!BasicCharacterStateMachine.instance.sneaking)
-            {
-                //Lanzamos un rayo desde el enemigo hacia el jugador para comprobar si esta
-                //escondido detras de alguna pared u obstaculo
-                //Sumamos un Offset al origen en el eje Y para que no lance el rayo desde los pies
-                if (Physics.Raycast(rayOrigin.position, _targetDir.normalized,
-                    _targetDir.magnitude, obstacleLayer) == false)
-                {
-                    target = _targets[0].transform;
-                }
+            //if (!BasicCharacterStateMachine.instance.sneaking)
+            //{
+            //    //Lanzamos un rayo desde el enemigo hacia el jugador para comprobar si esta
+            //    //escondido detras de alguna pared u obstaculo
+            //    //Sumamos un Offset al origen en el eje Y para que no lance el rayo desde los pies
+            //    if (Physics.Raycast(rayOrigin.position, _targetDir.normalized,
+            //        _targetDir.magnitude, obstacleLayer) == false)
+            //    {
+            //        target = _targets[0].transform;
+            //    }
 
-            }
+            //}
             //Dibujamos el rayo que comprueba si esta tras un obstaculo
             //Sumamos un offset al origen en el eje Y para que no lance el rayo desde los pies
             Debug.DrawRay(rayOrigin.position, _targetDir, Color.magenta);
@@ -123,18 +122,13 @@ public class HannahStateManager : MonoBehaviour
     }
     public void RoomDetection()
     {
-        rooms = GameObject.FindGameObjectsWithTag("Room");       
+        //Escoge una localizacion dentro del array
+        randomRoom = Random.Range(0, rooms.Length);
         if (rooms.Length <= 0)
         {
             return;
         }
-        centrePoint.position = rooms[randomRoom].transform.position + new Vector3(0, 1, 0);
-    }
-
-    public void randomRoomSelection()
-    {
-        randomRoom = Random.Range(0, rooms.Length);
-
+        
     }
     #endregion
 
@@ -153,7 +147,6 @@ public class HannahStateManager : MonoBehaviour
 
     public void RoomPatrol()
     {
-        waypoints = GameObject.FindGameObjectsWithTag("WayPoints");
         maxRoomWP = waypoints.Length;
         if (agent.remainingDistance >= .1f)
         {

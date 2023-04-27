@@ -12,7 +12,7 @@ public class LaurenAIBehaviour : MonoBehaviour
     bool foundPlayer = false;
     bool playerLeft = true;
     bool attackPlayer = false;
-    float aux;
+    float aux1, aux2;
 
     public static LaurenAIBehaviour instance;
     private void Awake()
@@ -30,7 +30,7 @@ public class LaurenAIBehaviour : MonoBehaviour
     void Start()
     {
         //spawnea en la habitacion inicial. despues ya selecciona habitacion random
-        transform.position = rooms[0].position + new Vector3(0f, 0.15f, 0f);
+        transform.position = rooms[0].position + new Vector3(0f, transform.position.y, 0f);
         ChangeRange();
     }
 
@@ -47,9 +47,9 @@ public class LaurenAIBehaviour : MonoBehaviour
                 StartCoroutine(CRT_ChangeRoom());
             }
             //si el jugador no esta agachado dentro del rango, que lo ataque
-            if (!BasicCharacterStateMachine.instance.sneaking && BasicCharacterStateMachine.instance.moveDirection != Vector3.zero)
+            if (true)
             {
-                attackPlayer = true;
+
             }
         }
         //se cambia al final del frame para que no lo repita multiples veces
@@ -60,12 +60,10 @@ public class LaurenAIBehaviour : MonoBehaviour
     void DetectPlayer()
     {
         Collider[] _targets = Physics.OverlapSphere(transform.position, hearingRange, targetLayer);
-        //si detecta al jugador que diga que lo ha encontrado
         if (_targets.Length > 0)
         {
             foundPlayer = true;
         }
-        //si no lo detecta pero foundPlayer sigue siendo true, significa que justo se ha ido
         else
         {
             if (foundPlayer)
@@ -86,45 +84,29 @@ public class LaurenAIBehaviour : MonoBehaviour
     {
         //selecciona habitacion random
         int r = Random.Range(0, rooms.Length);
-        transform.position = rooms[r].position + new Vector3(0f, 0.15f, 0f); ;
+        transform.position = rooms[r].position + new Vector3(0f, transform.position.y, 0f); ;
         ChangeRange();
     }
 
-
     void ChangeRange()
     {
-        float minDistance = 9999999;
-        for (int i = 0; i < 4; i++)
+        if (Physics.Raycast(transform.position, Vector3.up, out RaycastHit hit, maxDistance, wallLayer))
         {
-            Vector3 direction = Vector3.forward;
-            switch (i)
-            {
-                case 0:
-                    direction = Vector3.back;
-                    break;
-                case 1:
-                    direction = Vector3.right;
-                    break;
-                case 2:
-                    direction = Vector3.left;
-                    break;
-                default:
-                    break;
-            }
-
-            if (Physics.Raycast(transform.position, direction, out RaycastHit hit, maxDistance, wallLayer))
-            {
-                Debug.DrawLine(transform.position, hit.point, Color.red, 99999);
-                aux = (transform.position - hit.point).sqrMagnitude;
-                if (minDistance > aux)
-                {
-                    minDistance = aux;
-                }
-            }
+            aux1 = (transform.position - hit.transform.position).sqrMagnitude;
+        }
+        if (Physics.Raycast(transform.position, Vector3.right, out RaycastHit hit2, maxDistance, wallLayer))
+        {
+            aux2 = (transform.position - hit2.transform.position).sqrMagnitude;
         }
 
-        hearingRange = Mathf.Sqrt(minDistance);
-
+        if (aux1 <= aux2)
+        {
+            hearingRange = aux1;
+        }
+        else
+        {
+            hearingRange = aux2;
+        }
         Debug.Log(hearingRange);
     }
 

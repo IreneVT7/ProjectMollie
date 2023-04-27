@@ -78,38 +78,18 @@ public class WaypointLocator : MonoBehaviour
         if (Physics.Raycast(hit.point + -FirstWayPoint * distance, Vector3.down, out RaycastHit _hit, WallLayer)) 
         {
             waypoints[0].transform.position = _hit.point;
-            waypoints[0].tag = "WayPoints";
-        }
-        else
-        {
-            waypoints[0].tag = "Untagged";
         }
         if (Physics.Raycast(hit2.point + -SecondWayPoint * distance, Vector3.down, out RaycastHit _hit2, WallLayer))
         {
             waypoints[1].transform.position = _hit2.point;
-            waypoints[1].tag = "WayPoints";
-        }
-        else
-        {
-            waypoints[1].tag = "Untagged";
         }
         if (Physics.Raycast(hit3.point + -ThirdWayPoint * distance, Vector3.down, out RaycastHit _hit3, WallLayer)) 
         {
             waypoints[2].transform.position = _hit3.point;
-            waypoints[2].tag = "WayPoints";
-        }
-        else
-        {
-            waypoints[2].tag = "Untagged";
         }
         if (Physics.Raycast(hit4.point + -FourthWayPoint * distance, Vector3.down, out RaycastHit _hit4, WallLayer))
         {
             waypoints[3].transform.position = _hit4.point;
-            waypoints[3].tag = "WayPoints";
-        }
-        else
-        {
-            waypoints[3].tag = "Untagged";
         }
 
     }

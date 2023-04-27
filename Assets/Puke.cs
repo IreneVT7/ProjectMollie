@@ -23,7 +23,6 @@ public class Puke : MonoBehaviour
         }
         if (duration <= .1f)
         {
-            PukeBehavior.instance.detected = false;
             Destroy(this.gameObject);
             PukeBehavior.instance.instantiated = false;
             
@@ -34,16 +33,6 @@ public class Puke : MonoBehaviour
         if (other.tag == "Player")
         {
             PukeBehavior.instance.detected = true;
-            HannahStateManager.instance.target = BasicCharacterStateMachine.instance.transform;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "Player")
-        {
-            PukeBehavior.instance.detected = false;
-            HannahStateManager.instance.target = null ;
         }
     }
 }
