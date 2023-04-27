@@ -34,6 +34,7 @@ public class Puke : MonoBehaviour
         if (other.tag == "Player")
         {
             PukeBehavior.instance.detected = true;
+            HannahStateManager.instance.target = BasicCharacterStateMachine.instance.transform;
         }
     }
 
@@ -42,6 +43,7 @@ public class Puke : MonoBehaviour
         if (other.tag == "Player")
         {
             PukeBehavior.instance.detected = false;
+            HannahStateManager.instance.target = null ;
         }
     }
 }

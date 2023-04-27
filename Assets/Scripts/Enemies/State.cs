@@ -91,7 +91,8 @@ public class State
         public override void Start()
         {
             HannahStateManager.instance.randomRoomSelection();
-            HannahStateManager.instance.detected = false;
+            
+            //HannahStateManager.instance.detected = false;
             //HannahStateManager.instance.rooms = GameObject.FindGameObjectsWithTag("Room");
             Debug.Log("Patrol");
             if (HannahStateManager.instance.agent.remainingDistance <= .1f)
@@ -206,7 +207,7 @@ public class State
                     HannahStateManager.instance.DetectCharacter();
                 }                
                 HannahStateManager.instance.Chase();
-                if (HannahStateManager.instance.target == null)
+                if (HannahStateManager.instance.target == null && !PukeBehavior.instance.detected)
                 {
                     nextState = new Patrol();
                     stage = EVENTS.EXIT;
