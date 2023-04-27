@@ -90,9 +90,9 @@ public class State
 
         public override void Start()
         {
+            HannahStateManager.instance.randomRoomSelection();
             HannahStateManager.instance.detected = false;
-            HannahStateManager.instance.rooms = GameObject.FindGameObjectsWithTag("Room");
-            Vector3 vector3 = HannahStateManager.instance.centrePoint.position = HannahStateManager.instance.rooms[HannahStateManager.instance.randomRoom].transform.position + new Vector3(0, 1, 0);
+            //HannahStateManager.instance.rooms = GameObject.FindGameObjectsWithTag("Room");
             Debug.Log("Patrol");
             if (HannahStateManager.instance.agent.remainingDistance <= .1f)
             {
@@ -105,9 +105,8 @@ public class State
         {
             HannahStateManager.instance.RoomDetection();
             HannahStateManager.instance.DetectCharacter();
-
-            HannahStateManager.instance.rooms = GameObject.FindGameObjectsWithTag("Room");
-            HannahStateManager.instance.waypoints = GameObject.FindGameObjectsWithTag("WayPoints");
+            //HannahStateManager.instance.rooms = GameObject.FindGameObjectsWithTag("Room");
+            
             if (HannahStateManager.instance.agent.remainingDistance <= 1f)
             {
                 nextState = new RoomPatrol();
@@ -147,7 +146,6 @@ public class State
             WaypointLocator.instance.SecondWayPoint = new Vector3(Random.Range(1, -1), 0, -1);
             WaypointLocator.instance.ThirdWayPoint = new Vector3(1, 0, Random.Range(1, -1));
             WaypointLocator.instance.FourthWayPoint = new Vector3(-1, 0, Random.Range(1, -1));
-            HannahStateManager.instance.waypoints = GameObject.FindGameObjectsWithTag("WayPoints");
             Debug.Log("Room Patrol");
             counter = 20f;
             base.Start();
@@ -157,7 +155,6 @@ public class State
         {
             HannahStateManager.instance.RoomPatrol();
             HannahStateManager.instance.DetectCharacter();
-            HannahStateManager.instance.waypoints = GameObject.FindGameObjectsWithTag("WayPoints");
             if (HannahStateManager.instance.target != null)
             {
                 nextState = new Chase();

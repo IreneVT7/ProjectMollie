@@ -65,6 +65,7 @@ public class HannahStateManager : MonoBehaviour
     }
     private void Update()
     {
+        
         currentState = currentState.Process();
     }
     public void Idle()
@@ -122,13 +123,17 @@ public class HannahStateManager : MonoBehaviour
     }
     public void RoomDetection()
     {
-        //Escoge una localizacion dentro del array
-        randomRoom = Random.Range(0, rooms.Length);
+        rooms = GameObject.FindGameObjectsWithTag("Room");       
         if (rooms.Length <= 0)
         {
             return;
         }
-        
+        centrePoint.position = rooms[randomRoom].transform.position + new Vector3(0, 1, 0);
+    }
+
+    public void randomRoomSelection()
+    {
+        randomRoom = Random.Range(0, rooms.Length);
     }
     #endregion
 
@@ -147,6 +152,7 @@ public class HannahStateManager : MonoBehaviour
 
     public void RoomPatrol()
     {
+        waypoints = GameObject.FindGameObjectsWithTag("WayPoints");
         maxRoomWP = waypoints.Length;
         if (agent.remainingDistance >= .1f)
         {
