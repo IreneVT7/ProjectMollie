@@ -113,11 +113,13 @@ public class BasicCharacterStateMachine : MonoBehaviour
 
     public void Sneak()
     {
+        sneaking = true;
         transform.localScale = new Vector3(transform.localScale.x, 0.63f, transform.localScale.z);
     }
 
     public void ScaleBackToNormal()
     {
+        sneaking = false;
         transform.localScale = new Vector3(transform.localScale.x, 1.26f, transform.localScale.z);
     }
 
