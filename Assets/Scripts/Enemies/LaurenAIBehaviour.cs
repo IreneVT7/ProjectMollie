@@ -38,55 +38,33 @@ public class LaurenAIBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        DetectPlayer();
-        if (foundPlayer)
+        Collider[] _targets = Physics.OverlapSphere(transform.position, hearingRange, targetLayer);
+        //si detecta al jugador que diga que lo ha encontrado
+        if (_targets.Length > 0)
         {
+            Debug.Log("Hay jugador");
+            foundPlayer = true;
             //si el jugador no esta agachado dentro del rango, que lo ataque
-            if (!BasicCharacterStateMachine.instance.sneaking && (BasicCharacterStateMachine.instance.moveDirection != Vector3.zero))
+            if (!BasicCharacterStateMachine.instance.sneaking && (BasicCharacterStateMachine.instance.moveDirection.x != 0 && BasicCharacterStateMachine.instance.moveDirection.z != 0))
             {
                 attackPlayer = true;
                 Debug.Log("BOOO");
             }
         }
-        //si se sale del rango que cambie de habitacion
-        else if (playerLeft)
-        {
-            StartCoroutine(CRT_ChangeRoom());
-        }
-        //se cambia al final del frame para que no lo repita multiples veces
-        playerLeft = false;
-        foundPlayer = false;
-
-    }
-
-
-    void DetectPlayer()
-    {
-        Collider[] _targets = Physics.OverlapSphere(transform.position, hearingRange, targetLayer);
-        //si detecta al jugador que diga que lo ha encontrado
-        if (_targets.Length > 0)
-        {
-            Debug.Log("paso");
-            foundPlayer = true;
-        }
         //si no lo detecta pero foundPlayer sigue siendo true, significa que justo se ha ido
-        else
+        else if (foundPlayer)
         {
-            if (foundPlayer)
-            {
-                playerLeft = true;
-            }
+            Debug.Log("player left");
+            playerLeft = true;
+            foundPlayer = false;
+            StartCoroutine(CRT_ChangeRoom());
         }
     }
 
     IEnumerator CRT_ChangeRoom()
     {
         yield return new WaitForSeconds(3f);
-        ChangeRoom();
-    }
-
-    void ChangeRoom()
-    {
+        Debug.Log("room");
         //selecciona habitacion random
         int r = Random.Range(0, rooms.Length);
         transform.position = rooms[r].position + new Vector3(0f, 0.15f, 0f);
@@ -117,7 +95,7 @@ public class LaurenAIBehaviour : MonoBehaviour
 
             if (Physics.Raycast(transform.position, direction, out RaycastHit hit, maxDistance, wallLayer))
             {
-                Debug.DrawLine(transform.position, hit.point, Color.red, 99999);
+                Debug.DrawLine(transform.position, hit.point, Color.red, 30);
                 aux = (transform.position - hit.point).sqrMagnitude;
                 if (minDistance > aux)
                 {
