@@ -13,7 +13,7 @@ public class Events : MonoBehaviour
     private AudioSource auSource;
     public AudioClip clip;
     public int dialogueNum;
-    public GameObject eventObject;
+    public VisualEvent VisualEvent;
     [HideInInspector] public bool eventStart;
 
 
@@ -28,6 +28,7 @@ public class Events : MonoBehaviour
             }
             else if (type == EventType.VISUAL)
             {
+                VisualEvent.Activate();
                 //se activa objeto y su codigo hace lo suyo
             }
             else if (type == EventType.FALL)

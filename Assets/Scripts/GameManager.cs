@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [HideInInspector] public bool hasKey = true;
+    [HideInInspector] public bool hasKey = false;
     [HideInInspector] public bool hasBiberon = false;
     [HideInInspector] public bool hasTrain = false;
     [HideInInspector] public bool biberonGiven = false;
     [HideInInspector] public bool trainGiven = false;
     public GameObject key;
+    public GameObject[] eventsToDeactivate;
 
 
     public static GameManager instance;
@@ -29,6 +30,10 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         key.SetActive(false);
+        for (int i = 0; i < eventsToDeactivate.Length; i++)
+        {
+            eventsToDeactivate[i].SetActive(false);
+        }
     }
 
     // Update is called once per frame

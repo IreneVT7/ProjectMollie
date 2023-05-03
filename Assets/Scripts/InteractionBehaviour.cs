@@ -9,6 +9,7 @@ public class InteractionBehaviour : MonoBehaviour
         GORDON, NINA, DOOR
     }
     public ObjectType type;
+    public GameObject eventTrigger;
     [HideInInspector] public bool interacted;
 
 
@@ -31,6 +32,7 @@ public class InteractionBehaviour : MonoBehaviour
                 {
                     GameManager.instance.biberonGiven = true;
                     GameManager.instance.NotifyEvent("Biberon Quest Completado");
+                    eventTrigger.SetActive(true);
                 }
             }
             else if (type == ObjectType.NINA)
