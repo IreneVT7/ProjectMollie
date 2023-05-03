@@ -4,35 +4,34 @@ using UnityEngine;
 
 public class Puke : MonoBehaviour
 {
-    public float minDuration;
-    public float maxDuration;
     public float duration;
 
     public bool detected;
     // Start is called before the first frame update
     void Start()
     {
-        duration = Random.Range(minDuration, maxDuration);
+
     }
 
     private void Update()
     {
-        if (duration >= 0)
-        {
-            duration -= Time.deltaTime;            
-        }
-        if (duration <= .1f)
-        {
-            Destroy(this.gameObject);
-            PukeBehavior.instance.instantiated = false;
-            
-        }
+
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
             PukeBehavior.instance.detected = true;
+            BasicCharacterStateMachine.instance.moveSpeed = 6;
+            HannahStateManager.instance.target = other.transform;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            BasicCharacterStateMachine.instance.moveSpeed = 9;
+            PukeBehavior.instance.detected = false;
         }
     }
 }

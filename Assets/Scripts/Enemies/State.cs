@@ -92,7 +92,8 @@ public class State
         {
             HannahStateManager.instance.detected = false;
             HannahStateManager.instance.rooms = GameObject.FindGameObjectsWithTag("Room");
-            Vector3 vector3 = HannahStateManager.instance.centrePoint.position = HannahStateManager.instance.rooms[HannahStateManager.instance.randomRoom].transform.position + new Vector3(0, 1, 0);
+            Vector3 vector3 = HannahStateManager.instance.centrePoint.position = 
+                HannahStateManager.instance.rooms[HannahStateManager.instance.randomRoom].transform.position + new Vector3(0, 1, 0);
             Debug.Log("Patrol");
             if (HannahStateManager.instance.agent.remainingDistance <= .1f)
             {
@@ -103,6 +104,7 @@ public class State
 
         public override void Update()
         {
+            Debug.Log("Patrol");
             HannahStateManager.instance.RoomDetection();
             HannahStateManager.instance.DetectCharacter();
 
@@ -195,32 +197,24 @@ public class State
 
         public override void Start()
         {
-            HannahStateManager.instance.detected = true;
             Debug.Log("Chase");
             HannahStateManager.instance.anim.SetTrigger("isChasing");
             base.Start();
         }
         public override void Update()
         {
-            if (HannahStateManager.instance.detected)
-            {
+            Debug.Log("Chase");
+
                 if (!PukeBehavior.instance.detected)
                 {
                     HannahStateManager.instance.DetectCharacter();
                 }                
                 HannahStateManager.instance.Chase();
-                if (HannahStateManager.instance.target == null)
+                if (HannahStateManager.instance.target == null && !PukeBehavior.instance.detected && !HannahStateManager.instance.detected)
                 {
                     nextState = new Patrol();
                     stage = EVENTS.EXIT;
-                }
-
-            }
-            else if(HannahStateManager.instance.target == null)
-            {
-                nextState = new Patrol();
-                stage = EVENTS.EXIT;
-            }
+                }          
 
             if (HannahStateManager.instance.GetDistanceToTarget() < HannahStateManager.instance.attackRange * HannahStateManager.instance.attackRange)
             {
