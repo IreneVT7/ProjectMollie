@@ -57,6 +57,7 @@ public class InteractionBehaviour : MonoBehaviour
                 if (GameManager.instance.hasKey)
                 {
                     GameManager.instance.NotifyEvent("Segundo Piso desbloqueado");
+                    LeanTween.rotate(this.gameObject, new Vector3(-90, 0, 87.5f), 5.5f).setEase(LeanTweenType.easeOutCirc);
                 }
             }
             interacted = false;

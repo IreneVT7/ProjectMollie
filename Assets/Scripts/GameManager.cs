@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [HideInInspector] public bool hasKey = false;
+    [HideInInspector] public bool hasKey = true;
     [HideInInspector] public bool hasBiberon = false;
     [HideInInspector] public bool hasTrain = false;
     [HideInInspector] public bool biberonGiven = false;
