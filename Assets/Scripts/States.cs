@@ -7,7 +7,7 @@ public class States
     //enum con las cosas que el personaje puede hacer
     public enum STATE
     {
-        IDLE, RUN, FALL, SNEAK, HIDE, PICKUP, INTERACT
+        IDLE, RUN, FALL, SNEAK, HIDE
     };
 
     //Estado actual del personaje
@@ -339,101 +339,3 @@ public class Hide : States
     }
 }
 
-// [SerializeField]
-// public class PickUp : States
-// {
-//     //Usamos el constructor y le pasamos todas las variables que necesita
-//     public PickUp() : base()
-//     {
-//         //Se le pasa el nombre del estado que tiene que hacer
-//         stateName = STATE.PICKUP;
-//     }
-
-//     public override void Enter()
-//     {
-//         // Debug.Log("entra");
-//         //Hacemos la animación de Idle
-//         // anim.SetTrigger("isIdle");
-//         //Llamamos al método Enter de la clase State
-//         base.Enter();
-//     }
-
-//     //UPDATE (IMPORTANTE: recordar dar salida al siguiente estado que pueda hacer)
-//     public override void Update()
-//     {
-//         if (BasicCharacterStateMachine.instance.pickingUp == false)
-//         {
-
-//         }
-//         // Debug.Log("update");
-//         BasicCharacterStateMachine.instance.MovementInput();
-//         BasicCharacterStateMachine.instance.Grounded();
-//         BasicCharacterStateMachine.instance.PickUp();
-//         if (BasicCharacterStateMachine.instance.moveDirection != Vector3.zero)
-//         {
-//             // Debug.Log("deberia entrar en run");
-//             //Si se mueve pasamos a correr
-//             BasicCharacterStateMachine.instance.TransitionToState(new Run());
-//         }        
-//         else if ((Input.GetButton("Sneak")) && (BasicCharacterStateMachine.instance.isGrounded == true))
-//         {
-//             BasicCharacterStateMachine.instance.TransitionToState(new Sneak());
-//             //Si salta pasamos al estado de salto
-//         }
-//         else if (BasicCharacterStateMachine.instance.isGrounded == false)
-//         {
-//             //Si no detecta suelo entonces se cae
-//             BasicCharacterStateMachine.instance.TransitionToState(new Fall());
-//         }
-
-//         base.Update();
-
-//     }
-
-//     //EXIT 
-//     public override void Exit()
-//     {
-//         //Para evitar errores de animación
-//         // anim.ResetTrigger("isIdle");
-//         //Llamamos al método Exit de la clase State
-//         base.Exit();
-//     }
-// }
-
-// [SerializeField]
-// public class Interact : States
-// {
-//     //Usamos el constructor y le pasamos todas las variables que necesita
-//     public PickUp() : base()
-//     {
-//         //Se le pasa el nombre del estado que tiene que hacer
-//         stateName = STATE.PICKUP;
-//     }
-
-//     //ENTER
-//     public override void Enter()
-//     {
-//         //Hacemos la animación de Idle
-//         // anim.SetTrigger("isPicking");
-//         Debug.Log("pickUp");
-//         //Llamamos al método Enter de la clase State
-//         base.Enter();
-//     }
-
-//     //UPDATE (IMPORTANTE: recordar dar salida al siguiente estado que pueda hacer)
-//     public override void Update()
-//     {
-//         //Cuando termina de recoger la moneda pasa a idle y de idle a donde sea
-//         BasicCharacterStateMachine.instance.TransitionToState(new Idle());
-//         BasicCharacterStateMachine.instance.pickingUp = false;
-//     }
-
-//     //EXIT 
-//     public override void Exit()
-//     {
-//         //Para evitar errores de animación
-//         // anim.ResetTrigger("isIdle");
-//         //Llamamos al método Exit de la clase State
-//         base.Exit();
-//     }
-// }
