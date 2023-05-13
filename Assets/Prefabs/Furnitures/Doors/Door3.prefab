@@ -960,6 +960,7 @@ GameObject:
   - component: {fileID: 7633556538732428171}
   - component: {fileID: 5086924753835647056}
   - component: {fileID: 1753581195}
+  - component: {fileID: 1833694827}
   m_Layer: 0
   m_Name: MarcoGrande
   m_TagString: Untagged
@@ -1008,7 +1009,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da6d90371567baa4fb811870839de7e3, type: 2}
+  - {fileID: 2100000, guid: 6642b39a591a4b344abbd8e485d5d2db, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1046,6 +1047,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!64 &1833694827
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1766857440203331617}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4499996800948126575, guid: d0ae5f026122f4f428a8a710b262a8c2, type: 3}
 --- !u!1 &4439804878717617740
 GameObject:
   m_ObjectHideFlags: 0
@@ -1142,7 +1157,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da6d90371567baa4fb811870839de7e3, type: 2}
+  - {fileID: 2100000, guid: a4ce9f0fcb786414da7c43ca6d178fd0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2205,14 +2220,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8885973437747607458}
-  m_LocalRotation: {x: -0.7063535, y: 0, z: 0, w: 0.7078593}
+  m_LocalRotation: {x: -0.7036528, y: -0.061567925, z: -0.061701294, w: 0.7051773}
   m_LocalPosition: {x: 3.2850053, y: -0.26599997, z: 0.000000076293944}
   m_LocalScale: {x: 1, y: 0.255068, z: 0.9821}
   m_Children:
   - {fileID: 9192981517135297959}
   m_Father: {fileID: 3951499306912111862}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: -89.878, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.876, y: -0.001, z: -10}
 --- !u!33 &3376578386066103681
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -2240,7 +2255,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da6d90371567baa4fb811870839de7e3, type: 2}
+  - {fileID: 2100000, guid: a4ce9f0fcb786414da7c43ca6d178fd0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2303,7 +2318,7 @@ HingeJoint:
   m_Anchor: {x: 0.2, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 90}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -18.500002, y: 2.974, z: -36.565}
+  m_ConnectedAnchor: {x: -18.534735, y: 2.9739249, z: -36.568035}
   m_UseSpring: 0
   m_Spring:
     spring: 0
