@@ -14,8 +14,10 @@ public class HannahStateManager : MonoBehaviour
     public float attackRange;
     public float rotationSpeed;
     public bool detected;
+    public bool audioDetected;
 
     Collider[] _targets;
+    Collider[] _targetsAudio;
 
     public static HannahStateManager instance;
     public Animator anim;
@@ -25,9 +27,11 @@ public class HannahStateManager : MonoBehaviour
     [Header("Deteccion")]
     public float visionRange;
     public float visionAngle;
+    public float audioRange;
     public LayerMask targetLayer;
     public LayerMask obstacleLayer;
     public Transform rayOrigin;
+    Vector3 _targetDir;
     public Transform target;
     public Transform TransformL, TransformR;
     #endregion
@@ -62,6 +66,7 @@ public class HannahStateManager : MonoBehaviour
         currentState = new IdleHannah();
         agent.autoBraking = false;
         agent.velocity = Vector3.zero;
+        detected = false;
         
         agent.speed = speed;
     }
@@ -75,6 +80,16 @@ public class HannahStateManager : MonoBehaviour
     }
 
     #region Detection
+
+    public void Detect()
+    {
+        DetectCharacter();
+        DetectAudio();
+        if (detected)
+        {
+            target = BasicCharacterStateMachine.instance.transform;
+        }
+    }
     public void DetectCharacter()
     {
         //Guardamos todos los objetos encontrados con el overlap
@@ -82,32 +97,39 @@ public class HannahStateManager : MonoBehaviour
         //Si ha encontrado algún objeto, la longitud del array es mayor que 0
         if (_targets.Length > 0)
         {
-            if (!BasicCharacterStateMachine.instance.sneaking)
-            {
-                target = _targets[0].transform;
-            }
-            //Calculamos la direccion hacia el objeto
-            Vector3 _targetDir = _targets[0].transform.position - rayOrigin.position;
-            //Si esta fuera del angulo de vision, lo ignoramos
-            //Se calcula si esta dentro con el angulo que hay entre el forward y la direccion
-            //del objetivo. Si este angulo es menor que la mitad del angulo de vision, esta dentro
-            if (Vector3.Angle(transform.forward, _targetDir) > visionAngle / 2f)
-            {
-                StartCoroutine(stopChasing());
+            bool targetDetected = false;
 
+            foreach (Collider target in _targets)
+            {
+                //Calculamos la direccion hacia el objeto
+                _targetDir = target.transform.position - rayOrigin.position;
+
+                //Si esta fuera del angulo de vision, lo ignoramos
+                //Se calcula si esta dentro con el angulo que hay entre el forward y la direccion
+                //del objetivo. Si este angulo es menor que la mitad del angulo de vision, esta dentro
+                if (Vector3.Angle(transform.forward, _targetDir) > visionAngle / 2f)
+                {
+                    StartCoroutine(stopChasing());
+                }
+                //Lanzamos un rayo desde el enemigo hacia el jugador para comprobar si esta
+                //escondido detras de alguna pared u obstaculo
+                //Sumamos un offset al origen en el eje Y para que no lance el rayo desde los pies
+                else if (Physics.Raycast(rayOrigin.position, _targetDir.normalized,
+                    _targetDir.magnitude, obstacleLayer) == false)
+                {
+                    targetDetected = true;
+                    break;
+                }
+
+                //Dibujamos el rayo que comprueba si esta tras un obstaculo
+                //Sumamos un offset al origen en el eje Y para que no lance el rayo desde los pies
+                Debug.DrawRay(rayOrigin.position, _targetDir, Color.magenta);
             }
-            //Lanzamos un rayo desde el enemigo hacia el jugador para comprobar si esta
-            //escondido detras de alguna pared u obstaculo
-            //Sumamos un offset al origen en el eje Y para que no lance el rayo desde los pies
-            else if (Physics.Raycast(rayOrigin.position, _targetDir.normalized,
-                _targetDir.magnitude, obstacleLayer) == false) 
+
+            if (targetDetected)
             {
                 detected = true;
-                target = _targets[0].transform;
-            }            
-            //Dibujamos el rayo que comprueba si esta tras un obstaculo
-            //Sumamos un offset al origen en el eje Y para que no lance el rayo desde los pies
-            Debug.DrawRay(rayOrigin.position, _targetDir, Color.magenta);
+            }
         }
         //Si el array está vacío, no ha encontrado nada
         else
@@ -115,6 +137,23 @@ public class HannahStateManager : MonoBehaviour
             StartCoroutine(stopChasing());
         }
     }
+    public void DetectAudio()
+    {
+       _targetsAudio = Physics.OverlapSphere(transform.position, audioRange, targetLayer);
+        foreach(Collider target in _targetsAudio)
+        {
+            if (!BasicCharacterStateMachine.instance.sneaking)
+            {
+                if (Physics.Raycast(rayOrigin.position, _targetDir.normalized,
+                _targetDir.magnitude, obstacleLayer) == false)
+                {
+                    detected = true;
+                    break;
+                }
+            }            
+        }
+    }
+
     public void RoomDetection()
     {
         //Escoge una localizacion dentro del array

@@ -62,7 +62,7 @@ public class State
 
         public override void Update()
         {
-            HannahStateManager.instance.DetectCharacter();
+            HannahStateManager.instance.Detect();
             if (HannahStateManager.instance.target != null)
             {
                 nextState = new Chase();
@@ -106,7 +106,7 @@ public class State
         {
             Debug.Log("Patrol");
             HannahStateManager.instance.RoomDetection();
-            HannahStateManager.instance.DetectCharacter();
+            HannahStateManager.instance.Detect();
 
             HannahStateManager.instance.rooms = GameObject.FindGameObjectsWithTag("Room");
             HannahStateManager.instance.waypoints = GameObject.FindGameObjectsWithTag("WayPoints");
@@ -158,7 +158,7 @@ public class State
         public override void Update()
         {
             HannahStateManager.instance.RoomPatrol();
-            HannahStateManager.instance.DetectCharacter();
+            HannahStateManager.instance.Detect();
             HannahStateManager.instance.waypoints = GameObject.FindGameObjectsWithTag("WayPoints");
             if (HannahStateManager.instance.target != null)
             {
@@ -207,7 +207,7 @@ public class State
 
                 if (!PukeBehavior.instance.detected)
                 {
-                    HannahStateManager.instance.DetectCharacter();
+                    HannahStateManager.instance.Detect();
                 }                
                 HannahStateManager.instance.Chase();
                 if (HannahStateManager.instance.target == null && !PukeBehavior.instance.detected && !HannahStateManager.instance.detected)
@@ -245,8 +245,7 @@ public class State
         }
         public override void Update()
         {
-            HannahStateManager.instance.DetectCharacter();
-            //HannahStateManager.instance.DetectCharacterAudio();
+            HannahStateManager.instance.Detect();
             HannahStateManager.instance.agent.velocity = Vector3.zero;
             if (HannahStateManager.instance.timeToAttack > 0f)
             {
