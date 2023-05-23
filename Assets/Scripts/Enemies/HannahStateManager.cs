@@ -24,7 +24,7 @@ public class HannahStateManager : MonoBehaviour
     public NavMeshAgent agent;
 
     #region detectionVAR
-    [Header("Deteccion")]
+    [Header("DETECCION")]
     public float visionRange;
     public float visionAngle;
     public float audioRange;
@@ -36,7 +36,7 @@ public class HannahStateManager : MonoBehaviour
     public Transform TransformL, TransformR;
     #endregion
     #region patrolVAR
-    [Header("Patrullaje")]
+    [Header("PATRULLAJE")]
     public GameObject[] rooms;
     public GameObject[] waypoints;
     public int roomWayPoints = 0;
@@ -140,17 +140,24 @@ public class HannahStateManager : MonoBehaviour
     public void DetectAudio()
     {
        _targetsAudio = Physics.OverlapSphere(transform.position, audioRange, targetLayer);
-        foreach(Collider target in _targetsAudio)
+        if (_targetsAudio.Length > 0)
         {
-            if (!BasicCharacterStateMachine.instance.sneaking)
+            foreach (Collider target in _targetsAudio)
             {
-                if (Physics.Raycast(rayOrigin.position, _targetDir.normalized,
-                _targetDir.magnitude, obstacleLayer) == false)
+                if (!BasicCharacterStateMachine.instance.sneaking)
                 {
-                    detected = true;
-                    break;
+                    if (Physics.Raycast(rayOrigin.position, _targetDir.normalized,
+                    _targetDir.magnitude, obstacleLayer) == false)
+                    {
+                        detected = true;
+                        break;
+                    }
                 }
-            }            
+            }
+        }        
+        else
+        {
+            StartCoroutine(stopChasing());
         }
     }
 
@@ -251,5 +258,8 @@ public class HannahStateManager : MonoBehaviour
         TransformR.localRotation = Quaternion.Euler(0f, visionAngle / 2f, 0f);
         Gizmos.DrawRay(TransformL.position, TransformL.forward * visionRange);
         Gizmos.DrawRay(TransformR.position, TransformR.forward * visionRange);
+
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(transform.position, audioRange);
     }
 }
