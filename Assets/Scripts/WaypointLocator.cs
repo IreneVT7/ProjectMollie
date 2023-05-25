@@ -71,10 +71,7 @@ public class WaypointLocator : MonoBehaviour
         {
 
         }
-        //Vector3 centreDir1 = hit.point -= transform.position;
-        //Vector3 centreDir2 = hit2.point -= transform.position;
-        //Vector3 centreDir3 = hit3.point -= transform.position;
-        //Vector3 centreDir4 = hit4.point -= transform.position;
+
         if (Physics.Raycast(hit.point + -FirstWayPoint * distance, Vector3.down, out RaycastHit _hit, WallLayer)) 
         {
             waypoints[0].transform.position = _hit.point;

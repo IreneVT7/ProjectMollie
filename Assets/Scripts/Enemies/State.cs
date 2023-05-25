@@ -8,7 +8,7 @@ public class State
 {
     public enum STATES
     {
-        IDLE, PATROL, ROOMPATROL, CHASE, ATTACK, PUKECHASE
+        IDLE, PATROL, ROOMPATROL, WAIT, CHASE, ATTACK, PUKECHASE
     }
 
     public enum EVENTS
@@ -57,22 +57,14 @@ public class State
         {
             Debug.Log("Idle Hannah");
             HannahStateManager.instance.Idle();
+            
             base.Start();
         }
 
         public override void Update()
         {
-            HannahStateManager.instance.Detect();
-            if (HannahStateManager.instance.target != null)
-            {
-                nextState = new Chase();
-                stage = EVENTS.EXIT;
-            }
-            else if (Random.Range(0, 100) < 10)
-            {
-                nextState = new Patrol();
-                stage = EVENTS.EXIT;
-            }
+            nextState = new Patrol();
+            stage = EVENTS.EXIT;
         }
 
         public override void Exit()
@@ -90,15 +82,16 @@ public class State
 
         public override void Start()
         {
+            HannahStateManager.instance.roomWayPoints = 0;
+            WaypointLocator.instance.FirstWayPoint = new Vector3(Random.Range(-1, 1), 0, 1);
+            WaypointLocator.instance.SecondWayPoint = new Vector3(Random.Range(1, -1), 0, -1);
+            WaypointLocator.instance.ThirdWayPoint = new Vector3(1, 0, Random.Range(1, -1));
+            WaypointLocator.instance.FourthWayPoint = new Vector3(-1, 0, Random.Range(-1, 1));
             HannahStateManager.instance.detected = false;
             HannahStateManager.instance.rooms = GameObject.FindGameObjectsWithTag("Room");
             Vector3 vector3 = HannahStateManager.instance.centrePoint.position = 
-                HannahStateManager.instance.rooms[HannahStateManager.instance.randomRoom].transform.position + new Vector3(0, 1, 0);
+                HannahStateManager.instance.rooms[HannahStateManager.instance.randomRoom].transform.position + new Vector3(0, 1, 0);            
             Debug.Log("Patrol");
-            if (HannahStateManager.instance.agent.remainingDistance <= .1f)
-            {
-                HannahStateManager.instance.Patrol();
-            }
             base.Start();
         }
 
@@ -107,9 +100,8 @@ public class State
             Debug.Log("Patrol");
             HannahStateManager.instance.RoomDetection();
             HannahStateManager.instance.Detect();
-
+            HannahStateManager.instance.Patrol();
             HannahStateManager.instance.rooms = GameObject.FindGameObjectsWithTag("Room");
-            HannahStateManager.instance.waypoints = GameObject.FindGameObjectsWithTag("WayPoints");
             if (HannahStateManager.instance.agent.remainingDistance <= 1f)
             {
                 nextState = new RoomPatrol();
@@ -127,6 +119,8 @@ public class State
                 nextState = new Chase();
                 stage = EVENTS.EXIT;
             }
+
+            
         }
 
         public override void Exit()
@@ -144,35 +138,31 @@ public class State
 
         public override void Start()
         {
-            HannahStateManager.instance.detected = false;
-            WaypointLocator.instance.FirstWayPoint = new Vector3(Random.Range(-1, 1), 0, 1);
-            WaypointLocator.instance.SecondWayPoint = new Vector3(Random.Range(1, -1), 0, -1);
-            WaypointLocator.instance.ThirdWayPoint = new Vector3(1, 0, Random.Range(1, -1));
-            WaypointLocator.instance.FourthWayPoint = new Vector3(-1, 0, Random.Range(1, -1));
+            HannahStateManager.instance.detected = false;            
             HannahStateManager.instance.waypoints = GameObject.FindGameObjectsWithTag("WayPoints");
+            HannahStateManager.instance.RoomPatrol();
             Debug.Log("Room Patrol");
-            counter = 20f;
             base.Start();
         }
 
         public override void Update()
         {
-            HannahStateManager.instance.RoomPatrol();
+            
             HannahStateManager.instance.Detect();
             HannahStateManager.instance.waypoints = GameObject.FindGameObjectsWithTag("WayPoints");
-            if (HannahStateManager.instance.target != null)
+            if (HannahStateManager.instance.roomWayPoints > 3)
             {
-                nextState = new Chase();
+                HannahStateManager.instance.roomWayPoints = 0;
+            }
+            else if (HannahStateManager.instance.agent.remainingDistance <= .1f)
+            {
+                nextState = new Wait();
                 stage = EVENTS.EXIT;
             }
 
-            if (counter > .1f)
+            if (HannahStateManager.instance.target != null)
             {
-                counter -= Time.deltaTime;
-            }
-            if (counter <= .1f)
-            {
-                nextState = new IdleHannah();
+                nextState = new Chase();
                 stage = EVENTS.EXIT;
             }
 
@@ -181,6 +171,46 @@ public class State
                 nextState = new Chase();
                 stage = EVENTS.EXIT;
             }
+            
+        }
+
+        public override void Exit()
+        {
+            base.Exit();
+        }
+    }
+
+    public class Wait : State
+    {
+        float counterWait;
+        public Wait() : base()
+        {
+            name = STATES.WAIT;
+        }
+
+        public override void Start()
+        {
+           
+            HannahStateManager.instance.agent.isStopped = true;
+            Debug.Log("Wait");
+            counterWait = 1.5f;
+            base.Start();
+        }
+
+        public override void Update()
+        {           
+            if (counterWait >= .1)
+            {
+                counterWait -= Time.deltaTime;
+            }
+            else
+            {
+                HannahStateManager.instance.roomWayPoints++;
+                HannahStateManager.instance.agent.isStopped = false; 
+                nextState = new RoomPatrol();
+                stage = EVENTS.EXIT;
+            }
+            
         }
 
         public override void Exit()
