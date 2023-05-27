@@ -6,7 +6,6 @@ public class VisualEvent : MonoBehaviour
 {
     public Transform endPoint;
     public float duration;
-    [HideInInspector] public bool activate;
 
     public void Activate()
     {
