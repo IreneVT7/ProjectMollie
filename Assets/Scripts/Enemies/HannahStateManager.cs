@@ -185,19 +185,11 @@ public class HannahStateManager : MonoBehaviour
     public void RoomPatrol()
     {
         maxRoomWP = waypoints.Length;
-        if (agent.remainingDistance >= .1f)
+        if (roomWayPoints > 3)
         {
-            agent.SetDestination(waypoints[roomWayPoints].transform.position);
-            return;
+            roomWayPoints = 0;
         }
-        else if (agent.remainingDistance <= .1f)
-        {
-            roomWayPoints++;
-            if (roomWayPoints == maxRoomWP)
-            {
-                roomWayPoints = 0;
-            }
-        }
+        agent.SetDestination(waypoints[roomWayPoints].transform.position);
     }
     #endregion
 
