@@ -32,24 +32,24 @@ public class State
 
     public State Process()
     {
-        //Si el evento en el que estoy es el de entrada, hago el método correspondiente de entrada
+        //Si el evento en el que estoy es el de entrada, hago el mï¿½todo correspondiente de entrada
         if (stage == EVENTS.START) Start();
-        //Si el evento en el que estoy es el de update, hago el método correspondiente
+        //Si el evento en el que estoy es el de update, hago el mï¿½todo correspondiente
         if (stage == EVENTS.UPDATE) Update();
-        //Si el evento en el que estoy es el de salida, hago el método correspondiente
+        //Si el evento en el que estoy es el de salida, hago el mï¿½todo correspondiente
         if (stage == EVENTS.EXIT)
         {
             Exit();
             //Y devolvemos el siguiente estado al que ir
             return nextState;
         }
-        //Devolvemos el resultado del método
+        //Devolvemos el resultado del mï¿½todo
         return this;
     }
     public class IdleHannah : State
     {
         public IdleHannah() : base()
-        {           
+        {
             name = STATES.IDLE;
         }
 
@@ -57,7 +57,7 @@ public class State
         {
             Debug.Log("Idle Hannah");
             HannahStateManager.instance.Idle();
-            
+            HannahStateManager.instance.anim.SetBool("Running", false);
             base.Start();
         }
 
@@ -69,7 +69,6 @@ public class State
 
         public override void Exit()
         {
-            HannahStateManager.instance.anim.ResetTrigger("isIdle");
             base.Exit();
         }
     }
@@ -89,9 +88,10 @@ public class State
             WaypointLocator.instance.FourthWayPoint = new Vector3(-1, 0, Random.Range(-1, 1));
             HannahStateManager.instance.detected = false;
             HannahStateManager.instance.rooms = GameObject.FindGameObjectsWithTag("Room");
-            Vector3 vector3 = HannahStateManager.instance.centrePoint.position = 
-                HannahStateManager.instance.rooms[HannahStateManager.instance.randomRoom].transform.position + new Vector3(0, 1, 0);            
+            Vector3 vector3 = HannahStateManager.instance.centrePoint.position =
+                HannahStateManager.instance.rooms[HannahStateManager.instance.randomRoom].transform.position + new Vector3(0, 1, 0);
             Debug.Log("Patrol");
+            HannahStateManager.instance.anim.SetBool("Running", true);
             base.Start();
         }
 
@@ -120,12 +120,11 @@ public class State
                 stage = EVENTS.EXIT;
             }
 
-            
+
         }
 
         public override void Exit()
         {
-            HannahStateManager.instance.anim.ResetTrigger("isWalking");
             base.Exit();
         }
     }
@@ -138,16 +137,17 @@ public class State
 
         public override void Start()
         {
-            HannahStateManager.instance.detected = false;            
+            HannahStateManager.instance.detected = false;
             HannahStateManager.instance.waypoints = GameObject.FindGameObjectsWithTag("WayPoints");
             HannahStateManager.instance.RoomPatrol();
             Debug.Log("Room Patrol");
+            HannahStateManager.instance.anim.SetBool("Running", true);
             base.Start();
         }
 
         public override void Update()
         {
-            
+
             HannahStateManager.instance.Detect();
             HannahStateManager.instance.waypoints = GameObject.FindGameObjectsWithTag("WayPoints");
             if (HannahStateManager.instance.roomWayPoints > 3)
@@ -171,7 +171,7 @@ public class State
                 nextState = new Chase();
                 stage = EVENTS.EXIT;
             }
-            
+
         }
 
         public override void Exit()
@@ -190,7 +190,7 @@ public class State
 
         public override void Start()
         {
-           
+            HannahStateManager.instance.anim.SetBool("Running", false);
             HannahStateManager.instance.agent.isStopped = true;
             Debug.Log("Wait");
             counterWait = 1.5f;
@@ -198,7 +198,7 @@ public class State
         }
 
         public override void Update()
-        {           
+        {
             if (counterWait >= .1)
             {
                 counterWait -= Time.deltaTime;
@@ -206,11 +206,11 @@ public class State
             else
             {
                 HannahStateManager.instance.roomWayPoints++;
-                HannahStateManager.instance.agent.isStopped = false; 
+                HannahStateManager.instance.agent.isStopped = false;
                 nextState = new RoomPatrol();
                 stage = EVENTS.EXIT;
             }
-            
+
         }
 
         public override void Exit()
@@ -228,23 +228,23 @@ public class State
         public override void Start()
         {
             Debug.Log("Chase");
-            HannahStateManager.instance.anim.SetTrigger("isChasing");
+            HannahStateManager.instance.anim.SetBool("Running", true);
             base.Start();
         }
         public override void Update()
         {
             Debug.Log("Chase");
 
-                if (!PukeBehavior.instance.detected)
-                {
-                    HannahStateManager.instance.Detect();
-                }                
-                HannahStateManager.instance.Chase();
-                if (HannahStateManager.instance.target == null && !PukeBehavior.instance.detected && !HannahStateManager.instance.detected)
-                {
-                    nextState = new Patrol();
-                    stage = EVENTS.EXIT;
-                }          
+            if (!PukeBehavior.instance.detected)
+            {
+                HannahStateManager.instance.Detect();
+            }
+            HannahStateManager.instance.Chase();
+            if (HannahStateManager.instance.target == null && !PukeBehavior.instance.detected && !HannahStateManager.instance.detected)
+            {
+                nextState = new Patrol();
+                stage = EVENTS.EXIT;
+            }
 
             if (HannahStateManager.instance.GetDistanceToTarget() < HannahStateManager.instance.attackRange * HannahStateManager.instance.attackRange)
             {
@@ -262,7 +262,7 @@ public class State
     }
     public class Attack : State
     {
-        public Attack(): base()
+        public Attack() : base()
         {
             name = STATES.ATTACK;
         }
@@ -270,7 +270,6 @@ public class State
         {
             Debug.Log("Attack");
             HannahStateManager.instance.timeToAttack = HannahStateManager.instance.maxTime;
-            HannahStateManager.instance.anim.SetTrigger("isAttacking");
             base.Start();
         }
         public override void Update()
@@ -283,8 +282,8 @@ public class State
             }
             if (HannahStateManager.instance.timeToAttack <= 0f)
             {
+                HannahStateManager.instance.AttackSequence();
                 HannahStateManager.instance.timeToAttack = HannahStateManager.instance.maxTime;
-                SceneManager.LoadScene(1);
             }
 
             if (HannahStateManager.instance.GetDistanceToTarget() > HannahStateManager.instance.attackRange * HannahStateManager.instance.attackRange)

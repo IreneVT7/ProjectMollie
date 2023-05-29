@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 using static State;
 
 public class HannahStateManager : MonoBehaviour
@@ -67,7 +68,7 @@ public class HannahStateManager : MonoBehaviour
         agent.autoBraking = false;
         agent.velocity = Vector3.zero;
         detected = false;
-        
+
         agent.speed = speed;
     }
     private void Update()
@@ -76,7 +77,6 @@ public class HannahStateManager : MonoBehaviour
     }
     public void Idle()
     {
-        anim.SetTrigger("isIdle");
     }
 
     #region Detection
@@ -94,7 +94,7 @@ public class HannahStateManager : MonoBehaviour
     {
         //Guardamos todos los objetos encontrados con el overlap
         _targets = Physics.OverlapSphere(transform.position, visionRange, targetLayer);
-        //Si ha encontrado algún objeto, la longitud del array es mayor que 0
+        //Si ha encontrado algï¿½n objeto, la longitud del array es mayor que 0
         if (_targets.Length > 0)
         {
             bool targetDetected = false;
@@ -131,7 +131,7 @@ public class HannahStateManager : MonoBehaviour
                 detected = true;
             }
         }
-        //Si el array está vacío, no ha encontrado nada
+        //Si el array estï¿½ vacï¿½o, no ha encontrado nada
         else
         {
             StartCoroutine(stopChasing());
@@ -139,7 +139,7 @@ public class HannahStateManager : MonoBehaviour
     }
     public void DetectAudio()
     {
-       _targetsAudio = Physics.OverlapSphere(transform.position, audioRange, targetLayer);
+        _targetsAudio = Physics.OverlapSphere(transform.position, audioRange, targetLayer);
         if (_targetsAudio.Length > 0)
         {
             foreach (Collider target in _targetsAudio)
@@ -154,7 +154,7 @@ public class HannahStateManager : MonoBehaviour
                     }
                 }
             }
-        }        
+        }
         else
         {
             StartCoroutine(stopChasing());
@@ -165,7 +165,7 @@ public class HannahStateManager : MonoBehaviour
     {
         //Escoge una localizacion dentro del array
         randomRoom = Random.Range(0, rooms.Length);
-        
+
     }
     #endregion
 
@@ -179,7 +179,6 @@ public class HannahStateManager : MonoBehaviour
         //Se establece el destino del agente
         agent.SetDestination(rooms[randomRoom].transform.position);
         //Se activa la animacion de andar
-        anim.SetTrigger("isWalking");
     }
 
     public void RoomPatrol()
@@ -195,7 +194,7 @@ public class HannahStateManager : MonoBehaviour
 
     public void Chase()
     {
-      
+
         if (target != null)
         {
             agent.SetDestination(target.position);
@@ -215,18 +214,31 @@ public class HannahStateManager : MonoBehaviour
         //Orientamos al personaje para que mire hacia esa direccion
         Quaternion _rot = Quaternion.LookRotation(_direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, _rot, Time.deltaTime * rotationSpeed);
+
     }
     IEnumerator stopChasing()
     {
         yield return new WaitForSeconds(chaseDuration);
         target = null;
         detected = false;
-        
+
+    }
+    public void AttackSequence()
+    {
+        StartCoroutine(CRT_AttackSequence());
+
+    }
+    IEnumerator CRT_AttackSequence()
+    {
+        anim.SetTrigger("Attack");
+        yield return new WaitForSeconds(1.7f);
+        SceneManager.LoadScene(1);
+
     }
     IEnumerator RoomPatrolDelay()
     {
         yield return new WaitForSeconds(1f);
-        agent.SetDestination(waypoints[roomWayPoints].transform.position);        
+        agent.SetDestination(waypoints[roomWayPoints].transform.position);
     }
 
     public float GetDistanceToTarget()
