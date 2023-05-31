@@ -333,6 +333,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5796111538887307338}
+  - component: {fileID: 1189820192205253775}
   m_Layer: 0
   m_Name: Washbasin
   m_TagString: Untagged
@@ -358,3 +359,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -116.157, z: 0}
+--- !u!65 &1189820192205253775
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6567440199576185584}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.7393947, y: 1.5440825, z: 1}
+  m_Center: {x: -0.008658349, y: -0.40723675, z: -3.706256e-11}
