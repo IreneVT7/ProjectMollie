@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Nina2
   m_EditorClassIdentifier: 
   dialogue:
-  - "\xA1Encontraste mi tren! \xA1Yay!"
-  - "Aqu\xED tienes la llave"
+  - You found it! Thanks!
+  - Here's the secret. Don't tell anyone! Hehe

@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Nina1
   m_EditorClassIdentifier: 
   dialogue:
-  - "\xA1Hola! \xBFTe gustan los trenes? \xA1A mi tambi\xE9n!"
-  - 'He perdido el mio...
+  - 'Mollie? Why are your here?
 
-    Si lo encuentras, te doy una llave'
+'
+  - "Why am I not playing? \nI love trains! But I lost mine..."
+  - If you find it, I'll show you a secret!
