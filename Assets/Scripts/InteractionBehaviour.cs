@@ -31,6 +31,7 @@ public class InteractionBehaviour : MonoBehaviour
                 else
                 {
                     GameManager.instance.biberonGiven = true;
+                    FatRoll.instance.MoveGordon();
                     GameManager.instance.NotifyEvent("Biberon Quest Completado");
                     eventTrigger.SetActive(true);
                 }
