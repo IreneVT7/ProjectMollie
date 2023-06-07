@@ -6,10 +6,9 @@ public class InteractionBehaviour : MonoBehaviour
 {
     public enum ObjectType
     {
-        GORDON, NINA, DOOR
+        GORDON, NINA, DOOR, PLANK
     }
     public ObjectType type;
-    public GameObject eventTrigger;
     [HideInInspector] public bool interacted;
 
 
@@ -23,6 +22,7 @@ public class InteractionBehaviour : MonoBehaviour
                 if (!GameManager.instance.hasBiberon)
                 {
                     DialogueUI.instance.ShowDialogue(0);
+                    GameManager.instance.NotifyEvent("New Quest", "Find food for Gordon");
                 }
                 else if (GameManager.instance.biberonGiven)
                 {
@@ -32,14 +32,15 @@ public class InteractionBehaviour : MonoBehaviour
                 {
                     GameManager.instance.biberonGiven = true;
                     FatRoll.instance.MoveGordon();
-                    GameManager.instance.NotifyEvent("Biberon Quest Completado");
-                    eventTrigger.SetActive(true);
+                    GameManager.instance.NotifyEvent("Gordons's Quest completed", "Explore the Second Floor");
+                    EventManager.instance.NextEvent();
                 }
             }
             else if (type == ObjectType.NINA)
             {
                 if (!GameManager.instance.hasTrain)
                 {
+                    GameManager.instance.NotifyEvent("New Quest", "Find Nina's Train");
                     DialogueUI.instance.ShowDialogue(2);
                 }
                 else if (GameManager.instance.trainGiven)
@@ -51,7 +52,7 @@ public class InteractionBehaviour : MonoBehaviour
                     DialogueUI.instance.ShowDialogue(3);
                     GameManager.instance.ShowKey();
                     GameManager.instance.trainGiven = true;
-                    GameManager.instance.NotifyEvent("Nina Quest Completado");
+                    GameManager.instance.NotifyEvent("Nina's Quest completed", "Find the shortcut");
 
                 }
             }
@@ -59,8 +60,16 @@ public class InteractionBehaviour : MonoBehaviour
             {
                 if (GameManager.instance.hasKey)
                 {
-                    GameManager.instance.NotifyEvent("Segundo Piso desbloqueado");
+                    GameManager.instance.NotifyEvent("Shortcut Unlocked", "Explore the Second Floor");
                     LeanTween.rotate(this.gameObject, new Vector3(-90, 0, 87.5f), 5.5f).setEase(LeanTweenType.easeOutCirc);
+                }
+            }
+            else if (type == ObjectType.PLANK)
+            {
+                if (GameManager.instance.hasPlank)
+                {
+                    GameManager.instance.ShowPlank();
+                    GameManager.instance.NotifyEvent("Plank placed", "Go to the last class");
                 }
             }
             interacted = false;

@@ -14,12 +14,12 @@ namespace FTG
             string key = "FTGPipeline" + Application.productName;
             if (!EditorPrefs.HasKey(key))
             {
-                Debug.Log("FTG: First Load, Checking Pipeline");
+                // Debug.Log("FTG: First Load, Checking Pipeline");
                 // FTGInfo info = Resources.Load<FTGInfo>("Settings/FTGInfo");
                 PipelineType aux = GetPipeline();
                 // Debug.Log("Current Shaders: "+ info.asset.ToString() + " Current pipeline: "+ aux.ToString());
 
-                Debug.Log("FTG: Setting FTG Shaders ");
+                // Debug.Log("FTG: Setting FTG Shaders ");
 
                 switch (aux)
                 {
@@ -32,15 +32,15 @@ namespace FTG
                 }
 
                 // Debug.Log("FTG: Current pipeline: " + aux.ToString());
-                EditorPrefs.SetInt(key,(int) aux);
+                EditorPrefs.SetInt(key, (int)aux);
             }
             else
             {
-                PipelineType storedPipeline =(PipelineType) EditorPrefs.GetInt("FTGPipeline");
+                PipelineType storedPipeline = (PipelineType)EditorPrefs.GetInt("FTGPipeline");
                 PipelineType aux = GetPipeline();
                 if (storedPipeline != aux)
                 {
-                    Debug.Log("FTG: Pipeline Change Detected, Reimporting FTG Shaders");
+                    // Debug.Log("FTG: Pipeline Change Detected, Reimporting FTG Shaders");
                     switch (aux)
                     {
                         case PipelineType.UniversalPipeline:
@@ -50,8 +50,8 @@ namespace FTG
                             ImportHDRP();
                             break;
                     }
-                    Debug.Log("FTG: Current pipeline: " + aux.ToString());
-                    EditorPrefs.SetInt(key,(int) aux);
+                    // Debug.Log("FTG: Current pipeline: " + aux.ToString());
+                    EditorPrefs.SetInt(key, (int)aux);
                 }
             }
         }
@@ -91,7 +91,7 @@ namespace FTG
             for (int index = 0; index < paths.Length; index++)
             {
                 paths[index] = AssetDatabase.GUIDToAssetPath(paths[index]);
-                Debug.Log("Loading FTG URP Shaders");
+                // Debug.Log("Loading FTG URP Shaders");
                 AssetDatabase.ImportPackage(paths[index], false);
             }
         }
@@ -102,7 +102,7 @@ namespace FTG
             for (int index = 0; index < paths.Length; index++)
             {
                 paths[index] = AssetDatabase.GUIDToAssetPath(paths[index]);
-                Debug.Log("Loading FTG HDRP-BIRP Shaders");
+                // Debug.Log("Loading FTG HDRP-BIRP Shaders");
                 AssetDatabase.ImportPackage(paths[index], false);
             }
         }

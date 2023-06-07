@@ -10,11 +10,5 @@ public class VisualEvent : MonoBehaviour
     public void Activate()
     {
         LeanTween.move(this.gameObject, endPoint.position, duration).setEase(LeanTweenType.easeOutCirc);
-        // StartCoroutine(CRT_Activate());
     }
-
-    // IEnumerator CRT_Activate()
-    // {
-    //     yield return null;
-    // }
 }

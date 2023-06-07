@@ -45,8 +45,11 @@ public class Events : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        eventStart = true;
-        Destroy(this.gameObject, 0.1f);
-
+        if (other.gameObject.CompareTag("Player"))
+        {
+            eventStart = true;
+            EventManager.instance.NextEvent();
+            Destroy(this.gameObject, 0.1f);
+        }
     }
 }

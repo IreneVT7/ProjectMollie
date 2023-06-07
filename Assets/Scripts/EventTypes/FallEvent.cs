@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class FallEvent : MonoBehaviour
 {
-    public GameObject thisTrigger, secondTrigger;
+    public GameObject thisTrigger;
     public Rigidbody[] rbs;
 
     private void Start()
     {
         thisTrigger.SetActive(true);
-        secondTrigger.SetActive(false);
         for (int i = 0; i < rbs.Length; i++)
         {
             rbs[i].isKinematic = true;
@@ -35,6 +34,5 @@ public class FallEvent : MonoBehaviour
             rbs[i].isKinematic = true;
             rbs[i].detectCollisions = false;
         }
-        secondTrigger.SetActive(true);
     }
 }
