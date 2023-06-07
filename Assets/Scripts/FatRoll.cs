@@ -16,6 +16,10 @@ public class FatRoll : MonoBehaviour
     void Start()
     {
         LeanTween.init(800);
+        LeanTween.rotateX(gameObject, -344, 0f);
+        LeanTween.rotateY(gameObject, 171, 0f);
+        LeanTween.rotateZ(gameObject, -237, 0f);
+        MoveGordon();
     }
 
     public void MoveGordon()
@@ -26,10 +30,10 @@ public class FatRoll : MonoBehaviour
     IEnumerator CRT_RollingStones()
     {
         yield return new WaitForSeconds(1f);
-        LeanTween.moveZ(gameObject, -55, 3).setDelay(.4f);
-        LeanTween.rotateZ(gameObject, -180, 3).setDelay(.4f);
-        LeanTween.rotateX(gameObject, 0, .3f);
-        LeanTween.moveY(gameObject, 2.5f, .3f);
+
+        LeanTween.rotateX(gameObject, -193, .3f);
+        LeanTween.rotateY(gameObject, -52, .3f);
+        LeanTween.rotateZ(gameObject, -53, .3f);
 
     }
 }
