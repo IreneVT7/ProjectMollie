@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: Mollie2
   m_EditorClassIdentifier: 
   dialogue:
-  - 
+  - '(Those are the Second Floor Stairs.
+
+    Surprisingly, the building is in really
+    good state)'

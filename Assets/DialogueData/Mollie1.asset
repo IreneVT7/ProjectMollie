@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Mollie1
   m_EditorClassIdentifier: 
   dialogue:
-  - It's been a really long time...
-  - Feels as if I never left.
+  - (It's been a really long time...)
+  - (Feels as if I never left.)
