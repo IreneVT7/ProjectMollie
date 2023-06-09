@@ -2637,7 +2637,7 @@ Transform:
   m_GameObject: {fileID: 8205810648399045858}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.005, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_Children:
   - {fileID: 5904461463163721000}
   - {fileID: 3961873748068359884}
@@ -2725,6 +2725,8 @@ MonoBehaviour:
   audioDetected: 0
   anim: {fileID: 3191672484537361442}
   agent: {fileID: 6924305760014641669}
+  steps: {fileID: 0}
+  screamer: {fileID: 0}
   visionRange: 20
   visionAngle: 120
   audioRange: 10
