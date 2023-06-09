@@ -1753,6 +1753,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6261680715364773068}
+  - component: {fileID: 3180592923982069833}
   m_Layer: 0
   m_Name: Visual Event
   m_TagString: Untagged
@@ -1776,6 +1777,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3180592923982069833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6261680715364773069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb5463247903dcf4cbe52e9537f5ecd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  endPoint: {fileID: 6261680715362634980}
+  shadow: {fileID: 9093905897743494099}
+  duration: 1.5
 --- !u!1 &6261680715911449824
 GameObject:
   m_ObjectHideFlags: 0
@@ -7598,7 +7614,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8466727269914964329}
   - component: {fileID: 9093905897743494098}
-  - component: {fileID: 9093905897743494101}
   m_Layer: 0
   m_Name: ShadowHannah
   m_TagString: Untagged
@@ -7642,17 +7657,3 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &9093905897743494101
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9093905897743494099}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb5463247903dcf4cbe52e9537f5ecd7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  endPoint: {fileID: 6261680715362634980}
-  duration: 1.5

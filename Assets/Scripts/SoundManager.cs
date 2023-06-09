@@ -7,21 +7,13 @@ using UnityEngine.Audio;
 public class SoundManager : MonoBehaviour
 {
     // Audio players components.
-    public AudioSource[] effectsSource;
+    public AudioSource[] effectsSource; //0= all player sfx, 1= all hannah sfx, 2= gordon roll, 3=player steps
     public AudioSource musicSource;
-
-    public AudioSource secondSource;
 
     public Slider musicSlider;
     public Slider sFXSlider;
 
-    // Random pitch adjustment range.
-    public float LowPitchRange = .95f;
-    public float HighPitchRange = 1.05f;
-
     public static SoundManager instance;
-
-
     private void Awake()
     {
         if (instance == null)
@@ -38,62 +30,23 @@ public class SoundManager : MonoBehaviour
     }
 
     // Sonido SFX por el audiosource para efectos de sonido
-    public void Play(AudioClip clip)
+    public void Play(int source, AudioClip clip)
     {
-        effectsSource[0].clip = clip;
-        effectsSource[0].Play();
+        effectsSource[source].clip = clip;
+        effectsSource[source].Play();
     }
 
-    public void PlayOneshot(AudioClip clip)
+    public void PlayOneshot(int source, AudioClip clip)
     {
-        effectsSource[0].clip = clip;
-        effectsSource[0].PlayOneShot(clip);
+        effectsSource[source].clip = clip;
+        effectsSource[source].PlayOneShot(clip);
     }
-
-    // public void PlaySteps(AudioClip clip)
-    // {
-    //     effectsSource[1].clip = clip;
-    //     effectsSource[1].Play();
-    // }
 
     // Musica por el audiosource para musica
-    public void PlayMusic(AudioClip clip)
+    public void PlayGordon()
     {
-        musicSource.clip = clip;
-        musicSource.Play();
-        
+        effectsSource[2].Play();
     }
-
-    public void PlaySecondSource(AudioClip clip)
-    {
-        secondSource.clip = clip;
-        secondSource.Play();
-    }
-
-    public void StopSecondSound()
-    {
-        secondSource.Stop();
-    }
-
-    
-    
-
-
-    // Sonido SFX por el audiosource para efectos de sonido + cambio random en el pitch para que parezcan sonidos diferentes
-    // public void RandomSoundEffect(params AudioClip[] clips)
-    // {
-    //     int randomIndex = Random.Range(0, clips.Length);
-    //     float randomPitch = Random.Range(LowPitchRange, HighPitchRange);
-
-    //     effectsSource.pitch = randomPitch;
-    //     effectsSource.clip = clips[randomIndex];
-    //     effectsSource.Play();
-    // }
-
-
-
-
-
 
 
     void Update()
@@ -115,11 +68,8 @@ public class SoundManager : MonoBehaviour
         }
         catch
         {
-
             //no hay sliders en esta escena
         }
-
-
     }
 
 

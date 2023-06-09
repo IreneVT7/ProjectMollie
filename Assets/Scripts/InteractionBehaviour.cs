@@ -32,8 +32,10 @@ public class InteractionBehaviour : MonoBehaviour
                 {
                     GameManager.instance.biberonGiven = true;
                     FatRoll.instance.MoveGordon();
+                    SoundManager.instance.PlayGordon();
                     GameManager.instance.NotifyEvent("Gordons's Quest completed", "Explore the Second Floor");
                     EventManager.instance.NextEvent();
+                    EventManager.instance.visualEvent1.SetActive(true);
                 }
             }
             else if (type == ObjectType.NINA)
@@ -53,7 +55,6 @@ public class InteractionBehaviour : MonoBehaviour
                     GameManager.instance.ShowKey();
                     GameManager.instance.trainGiven = true;
                     GameManager.instance.NotifyEvent("Nina's Quest completed", "Find the shortcut");
-
                 }
             }
             else if (type == ObjectType.DOOR)
@@ -61,6 +62,7 @@ public class InteractionBehaviour : MonoBehaviour
                 if (GameManager.instance.hasKey)
                 {
                     GameManager.instance.NotifyEvent("Shortcut Unlocked", "Explore the Second Floor");
+                    SoundManager.instance.PlayOneshot(0, GameManager.instance.doorClip);
                     LeanTween.rotate(this.gameObject, new Vector3(-90, 0, 87.5f), 5.5f).setEase(LeanTweenType.easeOutCirc);
                 }
             }

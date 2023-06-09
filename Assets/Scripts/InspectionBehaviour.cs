@@ -29,6 +29,8 @@ public class InspectionBehaviour : MonoBehaviour
     {
         if (interactingThisFrame)
         {
+
+            SoundManager.instance.PlayOneshot(0, GameManager.instance.paperClip);
             //desactiva los scripts de movimiento y rotacion de camara
             basicCharacterStateMachine.enabled = false;
             yawController.enabled = false;
@@ -61,6 +63,7 @@ public class InspectionBehaviour : MonoBehaviour
             if (Input.GetButtonDown("Fire1") && (cooldown == false))
             {
                 //vuelve a activar los scripts del personaje
+                SoundManager.instance.PlayOneshot(0, GameManager.instance.paperClip);
                 basicCharacterStateMachine.enabled = true;
                 yawController.enabled = true;
                 thirdPersonCamera.enabled = true;

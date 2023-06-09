@@ -11,6 +11,8 @@ public class BasicCharacterStateMachine : MonoBehaviour
     public Rigidbody rb;
     [Tooltip("Capsula del personaje")]
     public CapsuleCollider coll;
+    public AudioClip stepsClip;
+    public Animator anim;
     // [Tooltip("Animator del personaje")]
     // public Animator anim;
     [Tooltip("Velocidad a la que se mueve el personaje")]
@@ -241,6 +243,11 @@ public class BasicCharacterStateMachine : MonoBehaviour
         {
             flashlight.SetActive(false);
         }
+    }
+
+    public void PlaySteps()
+    {
+        SoundManager.instance.PlayOneshot(0, stepsClip);
     }
 
     IEnumerator Cooldown(float sec)

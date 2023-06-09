@@ -5,10 +5,18 @@ using UnityEngine;
 public class VisualEvent : MonoBehaviour
 {
     public Transform endPoint;
+    public GameObject shadow;
     public float duration;
 
     public void Activate()
     {
-        LeanTween.move(this.gameObject, endPoint.position, duration).setEase(LeanTweenType.easeOutCirc);
+        shadow.SetActive(true);
+        SoundManager.instance.PlayOneshot(0, EventManager.instance.laugh);
+        LeanTween.move(shadow, endPoint.position, duration).setEase(LeanTweenType.easeOutCirc);
+    }
+
+    public void DeactivateShadow()
+    {
+        shadow.SetActive(false);
     }
 }
