@@ -67,6 +67,7 @@ public class Idle : States
         if (BasicCharacterStateMachine.instance.moveDirection != Vector3.zero)
         {
             //Si se mueve pasamos a correr
+            BasicCharacterStateMachine.instance.anim.SetBool("Running", true);
             BasicCharacterStateMachine.instance.TransitionToState(new Run());
         }
         else if (BasicCharacterStateMachine.instance.interacting == true)
@@ -76,16 +77,19 @@ public class Idle : States
         else if ((Input.GetButton("Sneak")) && (BasicCharacterStateMachine.instance.isGrounded == true))
         {
             //Si snekea pos que sneakee
+            BasicCharacterStateMachine.instance.anim.SetBool("Running", false);
             BasicCharacterStateMachine.instance.TransitionToState(new Sneak());
         }
         else if (BasicCharacterStateMachine.instance.isGrounded == false)
         {
             //Si no detecta suelo entonces se cae
+            BasicCharacterStateMachine.instance.anim.SetBool("Running", false);
             BasicCharacterStateMachine.instance.TransitionToState(new Fall());
         }
         else if (BasicCharacterStateMachine.instance.hiding == true)
         {
             //Si se esconde, que pase al estado se esconder
+            BasicCharacterStateMachine.instance.anim.SetBool("Running", false);
             BasicCharacterStateMachine.instance.TransitionToState(new Hide());
         }
 
@@ -135,6 +139,7 @@ public class Run : States
         {
             //Si NO se mueve pasamos a idle
             BasicCharacterStateMachine.instance.TransitionToState(new Idle());
+            BasicCharacterStateMachine.instance.anim.SetBool("Running", false);
         }
         else if (BasicCharacterStateMachine.instance.interacting == true)
         {
@@ -144,16 +149,19 @@ public class Run : States
         {
             //Si snekea pos que sneakee
             BasicCharacterStateMachine.instance.TransitionToState(new Sneak());
+            BasicCharacterStateMachine.instance.anim.SetBool("Running", false);
         }
         else if (BasicCharacterStateMachine.instance.isGrounded == false)
         {
             //Si no detecta suelo entonces se cae
             BasicCharacterStateMachine.instance.TransitionToState(new Fall());
+            BasicCharacterStateMachine.instance.anim.SetBool("Running", false);
         }
         else if (BasicCharacterStateMachine.instance.hiding == true)
         {
             //Si se esconde, que pase al estado se esconder
             BasicCharacterStateMachine.instance.TransitionToState(new Hide());
+            BasicCharacterStateMachine.instance.anim.SetBool("Running", false);
         }
 
     }
@@ -285,6 +293,7 @@ public class Sneak : States
         else
         {
             BasicCharacterStateMachine.instance.ScaleBackToNormal();
+            BasicCharacterStateMachine.instance.anim.SetBool("Running", false);
             BasicCharacterStateMachine.instance.TransitionToState(new Idle());
         }
     }
@@ -324,6 +333,7 @@ public class Hide : States
         if (BasicCharacterStateMachine.instance.hiding == false)
         {
             //Si se sale del escondite vuelve a idle y a escala normal
+            BasicCharacterStateMachine.instance.anim.SetBool("Running", false);
             BasicCharacterStateMachine.instance.TransitionToState(new Idle());
         }
 

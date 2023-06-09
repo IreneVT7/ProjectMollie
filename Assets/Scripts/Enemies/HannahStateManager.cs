@@ -23,6 +23,8 @@ public class HannahStateManager : MonoBehaviour
     public static HannahStateManager instance;
     public Animator anim;
     public NavMeshAgent agent;
+    public AudioClip steps;
+    public AudioClip screamer;
 
     #region detectionVAR
     [Header("DETECCION")]
@@ -181,6 +183,8 @@ public class HannahStateManager : MonoBehaviour
         //Se activa la animacion de andar
     }
 
+    public void PlaySteps() { SoundManager.instance.PlayOneshot(1, steps); }
+
     public void RoomPatrol()
     {
         maxRoomWP = waypoints.Length;
@@ -194,7 +198,6 @@ public class HannahStateManager : MonoBehaviour
 
     public void Chase()
     {
-
         if (target != null)
         {
             agent.SetDestination(target.position);
@@ -221,7 +224,6 @@ public class HannahStateManager : MonoBehaviour
         yield return new WaitForSeconds(chaseDuration);
         target = null;
         detected = false;
-
     }
     public void AttackSequence()
     {
@@ -231,6 +233,7 @@ public class HannahStateManager : MonoBehaviour
     IEnumerator CRT_AttackSequence()
     {
         anim.SetTrigger("Attack");
+        SoundManager.instance.PlayOneshot(1, screamer);
         yield return new WaitForSeconds(1.7f);
         SceneManager.LoadScene(1);
 

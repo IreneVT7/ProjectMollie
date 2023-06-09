@@ -39,6 +39,7 @@ public class DialogueUI : MonoBehaviour
     private IEnumerator StepThroughDialogue(DialogueObject dialogueObject)
     {
         OpenAndCloseDialogueBox(true);
+        BasicCharacterStateMachine.moveDirection = Vector3.zero;
         BasicCharacterStateMachine.enabled = false;
         foreach (string dialogue in dialogueObject.Dialogue)
         {

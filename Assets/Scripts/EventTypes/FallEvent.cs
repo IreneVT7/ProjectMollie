@@ -19,6 +19,7 @@ public class FallEvent : MonoBehaviour
     public void Activate()
     {
         StartCoroutine(CRT_Activate());
+        SoundManager.instance.PlayOneshot(0, GameManager.instance.debrisClip);
     }
 
     IEnumerator CRT_Activate()
