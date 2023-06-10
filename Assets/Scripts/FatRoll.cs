@@ -5,6 +5,7 @@ using UnityEngine;
 public class FatRoll : MonoBehaviour
 {
     public static FatRoll instance;
+    public Animator anim;
     private void Awake()
     {
         if (!instance)
@@ -16,9 +17,6 @@ public class FatRoll : MonoBehaviour
     void Start()
     {
         LeanTween.init(800);
-        LeanTween.rotateX(gameObject, -344, 0f);
-        LeanTween.rotateY(gameObject, 171, 0f);
-        LeanTween.rotateZ(gameObject, -237, 0f);
         MoveGordon();
     }
 
@@ -30,10 +28,7 @@ public class FatRoll : MonoBehaviour
     IEnumerator CRT_RollingStones()
     {
         yield return new WaitForSeconds(1f);
-
-        LeanTween.rotateX(gameObject, -193, .3f);
-        LeanTween.rotateY(gameObject, -52, .3f);
-        LeanTween.rotateZ(gameObject, -53, .3f);
+        anim.Play("RollinStones");
 
     }
 }

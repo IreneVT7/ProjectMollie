@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Puke : MonoBehaviour
 {
-    public float duration;
-
     public bool detected;
     // Start is called before the first frame update
     void Start()

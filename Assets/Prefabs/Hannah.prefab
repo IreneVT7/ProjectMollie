@@ -2717,16 +2717,16 @@ MonoBehaviour:
   speed: 5
   chasingSpeed: 8
   chaseDuration: 10
-  timeToAttack: 30
-  maxTime: 5
+  timeToAttack: 1
+  maxTime: 1
   attackRange: 3
   rotationSpeed: 0
   detected: 0
   audioDetected: 0
   anim: {fileID: 3191672484537361442}
   agent: {fileID: 6924305760014641669}
-  steps: {fileID: 0}
-  screamer: {fileID: 0}
+  steps: {fileID: 8300000, guid: f32f90ab685ddbe429cd1dbd218f8de6, type: 3}
+  screamer: {fileID: 8300000, guid: 64f7206af57cc6c42bdb624c0d32fb2b, type: 3}
   visionRange: 20
   visionAngle: 120
   audioRange: 10
