@@ -17,7 +17,6 @@ public class FatRoll : MonoBehaviour
     void Start()
     {
         LeanTween.init(800);
-        MoveGordon();
     }
 
     public void MoveGordon()
