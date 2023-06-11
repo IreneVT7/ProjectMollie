@@ -35,5 +35,6 @@ public class FallEvent : MonoBehaviour
             rbs[i].isKinematic = true;
             rbs[i].detectCollisions = false;
         }
+        EventManager.instance.NextEvent();
     }
 }

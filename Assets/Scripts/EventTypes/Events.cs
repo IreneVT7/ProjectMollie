@@ -58,6 +58,12 @@ public class Events : MonoBehaviour
                 EventManager.instance.Hannah.SetActive(true);
                 // EventManager.instance.Lauren.SetActive(true);
             }
+            else if (type == EventType.STORY && dialogueNum == 13)
+            {
+                //hannah y lauren aparecen
+                EventManager.instance.NextEvent();
+                // EventManager.instance.Lauren.SetActive(true);
+            }
 
 
             eventStart = false;

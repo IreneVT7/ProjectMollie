@@ -7,7 +7,6 @@ public class MyMenuCanvasManager : MonoBehaviour
 {
     public GameObject mainMenuCanvas;
     public GameObject settingsCanvas;
-    public GameObject controlsCanvas;
     public AudioClip uisound;
 
     public Animation anim;
@@ -29,7 +28,6 @@ public class MyMenuCanvasManager : MonoBehaviour
         {
             mainMenuCanvas.SetActive(false);
             settingsCanvas.SetActive(false);
-            controlsCanvas.SetActive(false);
         }
     }
 
@@ -40,7 +38,6 @@ public class MyMenuCanvasManager : MonoBehaviour
         {
             mainMenuCanvas.SetActive(true);
             settingsCanvas.SetActive(false);
-            controlsCanvas.SetActive(false);
         }
         catch
         {
@@ -55,23 +52,6 @@ public class MyMenuCanvasManager : MonoBehaviour
         {
             mainMenuCanvas.SetActive(false);
             settingsCanvas.SetActive(true);
-            controlsCanvas.SetActive(false);
-        }
-        catch
-        {
-
-        }
-
-    }
-
-    public void ControlsEnable()
-    {
-        // SoundManager.instance.Play(uisound);
-        try
-        {
-            mainMenuCanvas.SetActive(false);
-            settingsCanvas.SetActive(false);
-            controlsCanvas.SetActive(true);
         }
         catch
         {
