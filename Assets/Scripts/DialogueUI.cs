@@ -47,6 +47,7 @@ public class DialogueUI : MonoBehaviour
             yield return new WaitUntil(() => Input.GetButtonDown("Fire1"));
         }
         BasicCharacterStateMachine.enabled = true;
+        BasicCharacterStateMachine.instance.rb.isKinematic = false;
         OpenAndCloseDialogueBox(false);
     }
 

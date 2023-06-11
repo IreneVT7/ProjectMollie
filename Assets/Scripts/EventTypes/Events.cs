@@ -45,6 +45,7 @@ public class Events : MonoBehaviour
             }
             else if (type == EventType.STORY)
             {
+                BasicCharacterStateMachine.instance.rb.isKinematic = true;
                 DialogueUI.instance.ShowDialogue(dialogueNum);
             }
 
